@@ -1,0 +1,17 @@
+[configuration]
+
+entry_symbol = "ffmpeg_init"
+compatibility_minimum = 4.1
+
+[libraries]
+windows.debug.x86_64 = "res://addons/ffmpegplayer/win64/FFmpegPlayer.dll"
+windows.release.x86_64 = "res://addons/ffmpegplayer/win64/FFmpegPlayer.dll"
+
+[dependencies]
+windows.x86_64 =
+    {"res://addons/ffmpegplayer/win64/avcodec-60.dll": "",
+    "res://addons/ffmpegplayer/win64/avfilter-9.dll": "",
+    "res://addons/ffmpegplayer/win64/avformat-60.dll": "",
+    "res://addons/ffmpegplayer/win64/avutil-58.dll": "",
+    "res://addons/ffmpegplayer/win64/swresample-4.dll": "",
+    "res://addons/ffmpegplayer/win64/swscale-7.dll": ""}
