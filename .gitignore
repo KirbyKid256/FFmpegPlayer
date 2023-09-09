@@ -2,7 +2,6 @@
 build
 bin
 FFmpegPlayer.dir
-x64
 
 # CMake generated project files
 *.vcxproj

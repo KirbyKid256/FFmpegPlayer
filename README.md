@@ -29,6 +29,12 @@ After building, the needed contents are found inside `sandbox/win64/ffmpeg_git_l
 
 Yes, creating a whole Linux install just to use this tool is easier than trying to build FFmpeg on Windows.
 
+For linux/unix/MacOS compilation of FFmpeg, it is easiest to use the [FFmpeg repo](https://github.com/FFmpeg/FFmpeg) and the following configure options:
+
+```
+./configure --enable-pthreads --enable-shared --disable-static --disable-zlib --disable-programs --disable-doc --disable-manpages --disable-podpages --disable-txtpages --disable-ffplay --disable-ffprobe --disable-ffmpeg --arch=x86_64
+```
+
 You may also need to rename `time.h` to `fftime.h` to fix file name conflicts on compilation of the gdextension.
 
 Built binaries need to be manually copied into the `addons/ffmpegplayer/win64` directory, there isn't a build script to copy them, sorry

@@ -136,25 +136,22 @@ if(CMAKE_VERSION VERSION_GREATER "3.13")
     target_link_directories(${PROJECT_NAME}
         PRIVATE
         ${CPP_BINDINGS_PATH}/bin/${GODOT_CPP_BUILD_TYPE}/
+        ${FFMPEG_DLL_PATH}
     )
 
     target_link_libraries(${PROJECT_NAME}
         godot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>
+        avcodec
+        avformat
+        avutil
+        swresample
+        swscale
     )
 else()
     target_link_libraries(${PROJECT_NAME}
             ${CPP_BINDINGS_PATH}/bin/libgodot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>.a
     )
 endif()
-
-# TODO link all FFmpeg dlls here
-target_link_libraries(${PROJECT_NAME}
-    ${FFMPEG_DLL_PATH}/avcodec
-    ${FFMPEG_DLL_PATH}/avformat
-    ${FFMPEG_DLL_PATH}/avutil
-    ${FFMPEG_DLL_PATH}/swresample
-    ${FFMPEG_DLL_PATH}/swscale
-)
 
 # Add the compile flags
 set_property(TARGET ${PROJECT_NAME} APPEND_STRING PROPERTY COMPILE_FLAGS ${GODOT_COMPILE_FLAGS})
