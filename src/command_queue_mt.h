@@ -75,7 +75,7 @@ class CommandQueueMT {
     struct Command1 : public CommandBase {
         T *instance;
         M method;
-        typename N p_n;
+        N p_n;
         virtual void call() override {
             (instance->*method)(p_n);
         }
@@ -86,7 +86,7 @@ class CommandQueueMT {
     struct CommandSync : public SyncCommand {
         T *instance;
         M method;
-        typename N p_n;
+        N p_n;
         virtual void call() override {
             (instance->*method)(p_n);
         }

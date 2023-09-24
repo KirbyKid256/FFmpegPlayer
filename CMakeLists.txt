@@ -1,6 +1,7 @@
 project(FFmpegPlayer)
 cmake_minimum_required(VERSION 3.6)
 
+set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
 set(GODOT_GDEXTENSION_DIR godot-cpp/gdextension/ CACHE STRING "Path to GDExtension interface header directory")
 set(CPP_BINDINGS_PATH godot-cpp/ CACHE STRING "Path to C++ bindings")
 
@@ -64,7 +65,11 @@ else()
 #elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     # using GCC and maybe MinGW?
 
-    set(GODOT_LINKER_FLAGS "-static-libgcc -static-libstdc++ -Wl,-R,'$$ORIGIN'")
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        set(GODOT_LINKER_FLAGS "-Wl")
+    else()
+        set(GODOT_LINKER_FLAGS "-static-libgcc -static-libstdc++ -Wl,-R,'$ORIGIN'")
+    endif()
 
     # Hmm.. maybe to strikt?
     set(GODOT_COMPILE_FLAGS "-fPIC -g -Wwrite-strings")
@@ -74,7 +79,7 @@ else()
     set(GODOT_COMPILE_FLAGS "${GODOT_COMPILE_FLAGS} -Wmissing-braces -Wmissing-format-attribute")
     set(GODOT_COMPILE_FLAGS "${GODOT_COMPILE_FLAGS} -Wmissing-include-dirs -Wmissing-noreturn -Wpacked -Wpointer-arith")
     set(GODOT_COMPILE_FLAGS "${GODOT_COMPILE_FLAGS} -Wredundant-decls -Wreturn-type -Wsequence-point")
-    set(GODOT_COMPILE_FLAGS "${GODOT_COMPILE_FLAGS} -Wswitch -Wswitch-enum -Wtrigraphs")
+    set(GODOT_COMPILE_FLAGS "${GODOT_COMPILE_FLAGS} -Wswitch -Wtrigraphs")
     set(GODOT_COMPILE_FLAGS "${GODOT_COMPILE_FLAGS} -Wuninitialized -Wunknown-pragmas -Wunreachable-code -Wunused-label")
     set(GODOT_COMPILE_FLAGS "${GODOT_COMPILE_FLAGS} -Wunused-value -Wvariadic-macros -Wvolatile-register-var -Wno-error=attributes")
 
@@ -95,9 +100,9 @@ endif()
 set(BITS 32)
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
     set(BITS 64)
-    set(FFMPEG_DLL_PATH shared/x64/ CACHE STRING "Path to shared AV/FFmpeg libraries (x64)")
+    set(FFMPEG_DLL_PATH ffmpeg/shared/x64/ CACHE STRING "Path to shared AV/FFmpeg libraries (x64)")
 else()
-    set(FFMPEG_DLL_PATH shared/x86/ CACHE STRING "Path to shared AV/FFmpeg libraries (x86)")
+    set(FFMPEG_DLL_PATH ffmpeg/shared/x86/ CACHE STRING "Path to shared AV/FFmpeg libraries (x86)")
 endif(CMAKE_SIZEOF_VOID_P EQUAL 8)
 
 # Get Sources

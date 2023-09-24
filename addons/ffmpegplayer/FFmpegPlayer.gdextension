@@ -8,6 +8,8 @@ windows.debug.x86_64 = "res://addons/ffmpegplayer/win64/FFmpegPlayer.dll"
 windows.release.x86_64 = "res://addons/ffmpegplayer/win64/FFmpegPlayer.dll"
 linux.debug.x86_64 = "res://addons/ffmpegplayer/linux64/libFFmpegPlayer.so"
 linux.release.x86_64 = "res://addons/ffmpegplayer/linux64/libFFmpegPlayer.so"
+macos.debug.x86_64 = "res://addons/ffmpegplayer/macos64/libFFmpegPlayer.dylib"
+macos.release.x86_64 = "res://addons/ffmpegplayer/macos64/libFFmpegPlayer.dylib"
 
 [dependencies]
 windows.x86_64 =
@@ -18,9 +20,16 @@ windows.x86_64 =
     "res://addons/ffmpegplayer/win64/swresample-4.dll": "",
     "res://addons/ffmpegplayer/win64/swscale-7.dll": ""}
 linux.x86_64 =
-    {"res://addons/ffmpegplayer/linux64/libavcodec.so": "",
-    "res://addons/ffmpegplayer/linux64/libavfilter.so": "",
-    "res://addons/ffmpegplayer/linux64/libavformat.so": "",
-    "res://addons/ffmpegplayer/linux64/libavutil.so": "",
-    "res://addons/ffmpegplayer/linux64/libswresample.so": "",
-    "res://addons/ffmpegplayer/linux64/libswscale.so": ""}
+    {"res://addons/ffmpegplayer/linux64/libavcodec.so.60": "",
+    "res://addons/ffmpegplayer/linux64/libavfilter.so.9": "",
+    "res://addons/ffmpegplayer/linux64/libavformat.so.60": "",
+    "res://addons/ffmpegplayer/linux64/libavutil.so.58": "",
+    "res://addons/ffmpegplayer/linux64/libswresample.so.4": "",
+    "res://addons/ffmpegplayer/linux64/libswscale.so.7": ""}
+macos.x86_64 =
+    {"res://addons/ffmpegplayer/macos64/libavcodec.60.dylib": "",
+    "res://addons/ffmpegplayer/macos64/libavfilter.9.dylib": "",
+    "res://addons/ffmpegplayer/macos64/libavformat.60.dylib": "",
+    "res://addons/ffmpegplayer/macos64/libavutil.58.dylib": "",
+    "res://addons/ffmpegplayer/macos64/libswresample.4.dylib": "",
+    "res://addons/ffmpegplayer/macos64/libswscale.7.dylib": ""}
