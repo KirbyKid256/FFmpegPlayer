@@ -1,9 +1,10 @@
-project(FFmpegPlayer)
 cmake_minimum_required(VERSION 3.6)
+project(FFmpegPlayer)
 
 set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
 set(GODOT_GDEXTENSION_DIR godot-cpp/gdextension/ CACHE STRING "Path to GDExtension interface header directory")
 set(CPP_BINDINGS_PATH godot-cpp/ CACHE STRING "Path to C++ bindings")
+set(FFMPEG_DIR ffmpeg/ CACHE STRING "Path to FFmpeg directory and included headers")
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     set(TARGET_PATH x11)
@@ -100,9 +101,9 @@ endif()
 set(BITS 32)
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
     set(BITS 64)
-    set(FFMPEG_DLL_PATH ffmpeg/shared/x64/ CACHE STRING "Path to shared AV/FFmpeg libraries (x64)")
+    set(FFMPEG_DLL_PATH libraries/x64/ CACHE STRING "Path to shared AV/FFmpeg libraries (x64)")
 else()
-    set(FFMPEG_DLL_PATH ffmpeg/shared/x86/ CACHE STRING "Path to shared AV/FFmpeg libraries (x86)")
+    set(FFMPEG_DLL_PATH libraries/x86/ CACHE STRING "Path to shared AV/FFmpeg libraries (x86)")
 endif(CMAKE_SIZEOF_VOID_P EQUAL 8)
 
 # Get Sources
@@ -117,7 +118,7 @@ target_include_directories(${PROJECT_NAME} SYSTEM
         ${CPP_BINDINGS_PATH}/include
         ${CPP_BINDINGS_PATH}/gen/include
         ${GODOT_GDEXTENSION_DIR}
-        ${FFMPEG_DLL_PATH}/include
+        ${FFMPEG_DIR}
 )
 
 # Create the correct name (godot.os.build_type.system_bits)
@@ -140,21 +141,32 @@ endif()
 if(CMAKE_VERSION VERSION_GREATER "3.13")
     target_link_directories(${PROJECT_NAME}
         PRIVATE
-        ${CPP_BINDINGS_PATH}/bin/${GODOT_CPP_BUILD_TYPE}/
+        ${CPP_BINDINGS_PATH}/bin/
         ${FFMPEG_DLL_PATH}
     )
 
-    target_link_libraries(${PROJECT_NAME}
-        godot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>
-        avcodec
-        avformat
-        avutil
-        swresample
-        swscale
-    )
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_link_libraries(${PROJECT_NAME}
+            libgodot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>.a
+            avcodec.60
+            avformat.60
+            avutil.58
+            swresample.4
+            swscale.7
+        )
+    else()
+        target_link_libraries(${PROJECT_NAME}
+            godot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>
+            avcodec
+            avformat
+            avutil
+            swresample
+            swscale
+        )
+    endif()
 else()
     target_link_libraries(${PROJECT_NAME}
-            ${CPP_BINDINGS_PATH}/bin/libgodot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>.a
+        ${CPP_BINDINGS_PATH}/bin/libgodot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>.a
     )
 endif()
 
