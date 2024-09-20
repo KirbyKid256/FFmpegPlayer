@@ -1,9 +1,11 @@
 /**************************************************************************/
+/*  video_decoder.cpp                                                     */
+/**************************************************************************/
 /*                     The original file was part of:                     */
 /*                             EIRTeam.FFmpeg                             */
 /*                         https://ph.eirteam.moe                         */
 /**************************************************************************/
-/* Copyright (c) 2023-present Álex Román (EIRTeam) & contributors.        */
+/* Copyright (c) 2023-present Ãlex RomÃ¡n (EIRTeam) & contributors.        */
 /*                                                                        */
 /*                                                                        */
 /* Permission is hereby granted, free of charge, to any person obtaining  */
@@ -57,8 +59,7 @@ bool is_hardware_pixel_format(AVPixelFormat p_fmt) {
         case AV_PIX_FMT_OPENCL:
         case AV_PIX_FMT_MEDIACODEC:
         case AV_PIX_FMT_VULKAN:
-        case AV_PIX_FMT_MMAL:
-        case AV_PIX_FMT_XVMC: {
+        case AV_PIX_FMT_MMAL: {
             return true;
         }
         default: {
@@ -144,15 +145,16 @@ void VideoDecoder::prepare_decoding() {
     }
 }
 
-void VideoDecoder::recreate_codec_context() {
+Error VideoDecoder::recreate_codec_context() {
     if (video_stream == nullptr) {
-        return;
+        return ERR_BUG;
     }
 
     AVCodecParameters codec_params = *video_stream->codecpar;
     BitField<HardwareVideoDecoder> target_hw_decoders = hw_decoding_allowed ? target_hw_video_decoders : HardwareVideoDecoder::NONE;
 
-    for (const AvailableDecoderInfo &info : get_available_decoders(format_context->iformat, codec_params.codec_id, target_hw_decoders)) {
+    Vector<AvailableDecoderInfo> available_video_decoders = get_available_video_decoders(format_context->iformat, codec_params.codec_id, target_hw_decoders);
+    for (const AvailableDecoderInfo &info : available_video_decoders) {
         if (video_codec_context != nullptr) {
             avcodec_free_context(&video_codec_context);
         }
@@ -178,12 +180,18 @@ void VideoDecoder::recreate_codec_context() {
         int open_codec_result = avcodec_open2(video_codec_context, info.codec->get_codec_ptr(), nullptr);
         ERR_CONTINUE_MSG(open_codec_result < 0, vformat("Error trying to open %s codec: %s", info.codec->get_codec_ptr()->name, ffmpeg_get_error_message(open_codec_result)));
 
-        UtilityFunctions::print("Succesfully initialized decoder:", info.codec->get_codec_ptr()->name);
+        UtilityFunctions::print("Succesfully initialized video decoder:", info.codec->get_codec_ptr()->name);
         break;
     }
+
+    ERR_FAIL_COND_V_MSG(available_video_decoders.size() == 0, ERR_UNAVAILABLE, vformat("Error creating video codec context: Unsupported codec %s", avcodec_get_name(codec_params.codec_id)));
+
+    ERR_FAIL_COND_V_MSG(video_codec_context == nullptr, ERR_CANT_CREATE, vformat("Error creating video codec context: Exhausted all available decoders for codec %s", avcodec_get_name(codec_params.codec_id)));
+
     if (!audio_stream) {
-        return;
+        return OK;
     }
+
     codec_params = *audio_stream->codecpar;
     const AVCodec *codec = avcodec_find_decoder(codec_params.codec_id);
     if (codec) {
@@ -191,16 +199,16 @@ void VideoDecoder::recreate_codec_context() {
             avcodec_free_context(&audio_codec_context);
         }
         audio_codec_context = avcodec_alloc_context3(codec);
-        ERR_FAIL_COND_MSG(audio_codec_context == nullptr, vformat("Couldn't allocate codec context: %s", codec->name));
+        ERR_FAIL_COND_V_MSG(audio_codec_context == nullptr, FAILED, vformat("Couldn't allocate audio codec context: %s", codec->name));
         audio_codec_context->pkt_timebase = audio_stream->time_base;
 
         int param_copy_result = avcodec_parameters_to_context(audio_codec_context, audio_stream->codecpar);
-        ERR_FAIL_COND_MSG(param_copy_result < 0, vformat("Couldn't copy codec parameters from %s: %s", codec->name, ffmpeg_get_error_message(param_copy_result)));
+        ERR_FAIL_COND_V_MSG(param_copy_result < 0, FAILED, vformat("Couldn't copy codec parameters from %s: %s", codec->name, ffmpeg_get_error_message(param_copy_result)));
         int open_codec_result = avcodec_open2(audio_codec_context, codec, nullptr);
-        ERR_FAIL_COND_MSG(open_codec_result < 0, vformat("Error trying to open %s codec: %s", codec->name, ffmpeg_get_error_message(open_codec_result)));
-        UtilityFunctions::print("Succesfully initialized audio decoder:", codec->name);
+        ERR_FAIL_COND_V_MSG(open_codec_result < 0, ERR_CANT_OPEN, vformat("Error trying to open %s codec: %s", codec->name, ffmpeg_get_error_message(open_codec_result)));
         has_audio = true;
     }
+    return OK;
 }
 
 VideoDecoder::HardwareVideoDecoder VideoDecoder::from_av_hw_device_type(AVHWDeviceType p_device_type) {
@@ -235,12 +243,14 @@ VideoDecoder::HardwareVideoDecoder VideoDecoder::from_av_hw_device_type(AVHWDevi
 void VideoDecoder::_seek_command(double p_target_timestamp) {
     avcodec_flush_buffers(video_codec_context);
     av_seek_frame(format_context, video_stream->index, (long)(p_target_timestamp / video_time_base_in_seconds / 1000.0), AVSEEK_FLAG_BACKWARD);
+    // No need to seek the audio stream separately since it is seeked automatically with the video stream
+    // due to being in the same file
     if (has_audio) {
         avcodec_flush_buffers(audio_codec_context);
-        av_seek_frame(format_context, audio_stream->index, (long)(p_target_timestamp / video_time_base_in_seconds / 1000.0), AVSEEK_FLAG_BACKWARD);
     }
     skip_output_until_time = p_target_timestamp;
     decoder_state = DecoderState::READY;
+    skip_current_outputs.clear();
 }
 
 void VideoDecoder::_thread_func(void *userdata) {
@@ -389,7 +399,7 @@ void VideoDecoder::_read_decoded_frames(AVFrame *p_received_frame) {
         int64_t frame_timestamp = p_received_frame->best_effort_timestamp != AV_NOPTS_VALUE ? p_received_frame->best_effort_timestamp : p_received_frame->pts;
         double frame_time = (frame_timestamp - video_stream->start_time) * video_time_base_in_seconds * 1000.0;
 
-        if (skip_output_until_time > frame_time) {
+        if (skip_output_until_time > frame_time || skip_current_outputs.is_set()) {
             continue;
         }
 
@@ -397,7 +407,7 @@ void VideoDecoder::_read_decoded_frames(AVFrame *p_received_frame) {
         if (is_hardware_pixel_format((AVPixelFormat)p_received_frame->format)) {
             Ref<FFmpegFrame> hw_transfer_frame;
             if (hw_transfer_frames.size() > 0) {
-                hw_transfer_frame = hw_transfer_frames[0];
+                hw_transfer_frame = hw_transfer_frames.front()->get();
                 hw_transfer_frames.pop_front();
             }
 
@@ -436,14 +446,13 @@ void VideoDecoder::_read_decoded_frames(AVFrame *p_received_frame) {
             unwrapped_frame.resize(frame_size);
             uint8_t *unwrapped_frame_ptrw = unwrapped_frame.ptrw();
             {
-                memcpy(unwrapped_frame_ptrw, frame->get_frame()->data[0], frame_size);
+                for (int y = 0; y < height; y++) {
+                    memcpy(unwrapped_frame_ptrw, frame->get_frame()->data[0] + y * frame->get_frame()->linesize[0], width * 4);
+                    unwrapped_frame_ptrw += width * 4;
+                }
             }
             unwrapped_frame.resize(width * height * 4);
-            if (!image.is_valid()) {
-                image = Image::create_from_data(width, height, false, Image::FORMAT_RGBA8, unwrapped_frame);
-            } else {
-                image->set_data(width, height, false, Image::FORMAT_RGBA8, unwrapped_frame);
-            }
+            image = Image::create_from_data(width, height, false, Image::FORMAT_RGBA8, unwrapped_frame);
         }
 #ifdef FFMPEG_MT_GPU_UPLOAD
         Ref<ImageTexture> tex;
@@ -468,7 +477,9 @@ void VideoDecoder::_read_decoded_frames(AVFrame *p_received_frame) {
         decoded_frames_mutex.unlock();
 #else
         decoded_frames_mutex.lock();
-        decoded_frames.push_back(memnew(DecodedFrame(frame_time, image)));
+        if (!skip_current_outputs.is_set()) {
+            decoded_frames.push_back(memnew(DecodedFrame(frame_time, image)));
+        }
         decoded_frames_mutex.unlock();
 #endif
     }
@@ -493,7 +504,7 @@ void VideoDecoder::_read_decoded_audio_frames(AVFrame *p_received_frame) {
         int64_t frame_timestamp = p_received_frame->best_effort_timestamp != AV_NOPTS_VALUE ? p_received_frame->best_effort_timestamp : p_received_frame->pts;
         double frame_time = (frame_timestamp - audio_stream->start_time) * audio_time_base_in_seconds * 1000.0;
 
-        if (skip_output_until_time > frame_time) {
+        if (skip_output_until_time > frame_time || skip_current_outputs.is_set()) {
             continue;
         }
 
@@ -511,7 +522,9 @@ void VideoDecoder::_read_decoded_audio_frames(AVFrame *p_received_frame) {
         audio_frame->sample_data.resize(data_size / sizeof(float));
         memcpy(audio_frame->sample_data.ptrw(), frame->data[0], data_size);
         audio_buffer_mutex.lock();
-        decoded_audio_frames.push_back(audio_frame);
+        if (!skip_current_outputs.is_set()) {
+            decoded_audio_frames.push_back(audio_frame);
+        }
         audio_buffer_mutex.unlock();
 
         av_frame_unref(p_received_frame);
@@ -546,7 +559,7 @@ Ref<FFmpegFrame> VideoDecoder::_ensure_frame_pixel_format(Ref<FFmpegFrame> p_fra
     Ref<FFmpegFrame> scaler_frame;
     {
         if (scaler_frames.size() > 0) {
-            scaler_frame = scaler_frames[0];
+            scaler_frame = scaler_frames.front()->get();
             scaler_frames.pop_front();
         }
     }
@@ -633,10 +646,24 @@ AVFrame *VideoDecoder::_ensure_frame_audio_format(AVFrame *p_frame, AVSampleForm
 
 void VideoDecoder::seek(double p_time, bool p_wait) {
     decoded_frames_mutex.lock();
+    audio_buffer_mutex.lock();
+
     decoded_frames.clear();
+    decoded_audio_frames.clear();
+
+    last_decoded_frame_time.set(p_time);
+    skip_current_outputs.set();
+    decoded_frames_mutex.unlock();
     decoded_frames_mutex.unlock();
     audio_buffer_mutex.lock();
     decoded_audio_frames.clear();
+    decoded_frames_mutex.unlock();
+    audio_buffer_mutex.lock();
+    decoded_audio_frames.clear();
+    audio_buffer_mutex.unlock();
+    audio_buffer_mutex.unlock();
+    last_decoded_frame_time.set(p_time);
+
     audio_buffer_mutex.unlock();
     last_decoded_frame_time.set(p_time);
 
@@ -651,9 +678,9 @@ void VideoDecoder::start_decoding() {
     ERR_FAIL_COND_MSG(thread != nullptr, "Cannot start decoding once already started");
     if (format_context == nullptr) {
         prepare_decoding();
-        recreate_codec_context();
+        Error codec_context_create_error = recreate_codec_context();
 
-        if (video_stream == nullptr) {
+        if (video_stream == nullptr || codec_context_create_error != OK) {
             decoder_state = DecoderState::FAULTED;
             return;
         }
@@ -694,7 +721,7 @@ struct AvailableDecoderInfoComparator {
     }
 };
 
-Vector<VideoDecoder::AvailableDecoderInfo> VideoDecoder::get_available_decoders(const AVInputFormat *p_format, AVCodecID p_codec_id, BitField<HardwareVideoDecoder> p_target_decoders) {
+Vector<VideoDecoder::AvailableDecoderInfo> VideoDecoder::get_available_video_decoders(const AVInputFormat *p_format, AVCodecID p_codec_id, BitField<HardwareVideoDecoder> p_target_decoders) {
     Vector<VideoDecoder::AvailableDecoderInfo> codecs;
 
     Ref<FFmpegCodec> first_codec;
@@ -806,8 +833,7 @@ int VideoDecoder::get_audio_channel_count() const {
     return 0;
 }
 
-VideoDecoder::VideoDecoder(Ref<FileAccess> p_file) :
-        decoder_commands(true) {
+VideoDecoder::VideoDecoder(Ref<FileAccess> p_file) {
     video_file = p_file;
 }
 

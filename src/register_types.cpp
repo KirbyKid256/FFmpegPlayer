@@ -3,7 +3,7 @@
 /*                             EIRTeam.FFmpeg                             */
 /*                         https://ph.eirteam.moe                         */
 /**************************************************************************/
-/* Copyright (c) 2023-present ¡lex Rom·n (EIRTeam) & contributors.        */
+/* Copyright (c) 2023-present √Ålex Rom√°n (EIRTeam) & contributors.        */
 /*                                                                        */
 /*                                                                        */
 /* Permission is hereby granted, free of charge, to any person obtaining  */
@@ -41,7 +41,7 @@
 
 using namespace godot;
 
-#include "ffmpeg_video_stream.h"
+#include "video_stream_ffmpeg.h"
 #include "video_stream_ffmpeg_loader.h"
 
 Ref<VideoStreamFFMpegLoader> ffmpeg_loader;
@@ -78,9 +78,9 @@ void initialize_ffmpeg_module(ModuleInitializationLevel p_level) {
         return;
     }
     print_codecs();
-    GDREGISTER_ABSTRACT_CLASS(FFmpegVideoStreamPlayback);
+    GDREGISTER_ABSTRACT_CLASS(VideoStreamFFmpegPlayback);
     GDREGISTER_ABSTRACT_CLASS(VideoStreamFFMpegLoader);
-    GDREGISTER_CLASS(FFmpegVideoStream);
+    GDREGISTER_CLASS(VideoStreamFFmpeg);
     ffmpeg_loader.instantiate();
     ResourceLoader::get_singleton()->add_resource_format_loader(ffmpeg_loader);
 }

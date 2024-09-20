@@ -1,9 +1,11 @@
 /**************************************************************************/
+/*  register_types.h                                                      */
+/**************************************************************************/
 /*                     The original file was part of:                     */
 /*                             EIRTeam.FFmpeg                             */
 /*                         https://ph.eirteam.moe                         */
 /**************************************************************************/
-/* Copyright (c) 2023-present ¡lex Rom·n (EIRTeam) & contributors.        */
+/* Copyright (c) 2023-present √Ålex Rom√°n (EIRTeam) & contributors.        */
 /*                                                                        */
 /*                                                                        */
 /* Permission is hereby granted, free of charge, to any person obtaining  */

@@ -1,9 +1,11 @@
 /**************************************************************************/
+/*  video_decoder.h                                                       */
+/**************************************************************************/
 /*                     The original file was part of:                     */
 /*                             EIRTeam.FFmpeg                             */
 /*                         https://ph.eirteam.moe                         */
 /**************************************************************************/
-/* Copyright (c) 2023-present ¡lex Rom·n (EIRTeam) & contributors.        */
+/* Copyright (c) 2023-present √Ålex Rom√°n (EIRTeam) & contributors.        */
 /*                                                                        */
 /*                                                                        */
 /* Permission is hereby granted, free of charge, to any person obtaining  */
@@ -126,6 +128,7 @@ private:
     double audio_time_base_in_seconds;
     double duration;
     double skip_output_until_time = -1.0;
+    SafeFlag skip_current_outputs;
     SafeNumeric<float> last_decoded_frame_time;
     Ref<FileAccess> video_file;
     BitField<HardwareVideoDecoder> target_hw_video_decoders = HardwareVideoDecoder::ANY;
@@ -145,7 +148,7 @@ private:
     static int _read_packet_callback(void *p_opaque, uint8_t *p_buf, int p_buf_size);
     static int64_t _stream_seek_callback(void *p_opaque, int64_t p_offset, int p_whence);
     void prepare_decoding();
-    void recreate_codec_context();
+    Error recreate_codec_context();
     static HardwareVideoDecoder from_av_hw_device_type(AVHWDeviceType p_device_type);
 
     void _seek_command(double p_target_timestamp);
@@ -169,7 +172,7 @@ public:
     };
     void seek(double p_time, bool p_wait = false);
     void start_decoding();
-    Vector<AvailableDecoderInfo> get_available_decoders(const AVInputFormat *p_format, AVCodecID p_codec_id, BitField<HardwareVideoDecoder> p_target_decoders);
+    Vector<AvailableDecoderInfo> get_available_video_decoders(const AVInputFormat *p_format, AVCodecID p_codec_id, BitField<HardwareVideoDecoder> p_target_decoders);
     void return_frames(Vector<Ref<DecodedFrame>> p_frames);
     void return_frame(Ref<DecodedFrame> p_frame);
     Vector<Ref<DecodedFrame>> get_decoded_frames();

@@ -1,9 +1,11 @@
 /**************************************************************************/
+/*  video_stream_ffmpeg_loader.h                                          */
+/**************************************************************************/
 /*                     The original file was part of:                     */
 /*                             EIRTeam.FFmpeg                             */
 /*                         https://ph.eirteam.moe                         */
 /**************************************************************************/
-/* Copyright (c) 2023-present ¡lex Rom·n (EIRTeam) & contributors.        */
+/* Copyright (c) 2023-present √Ålex Rom√°n (EIRTeam) & contributors.        */
 /*                                                                        */
 /*                                                                        */
 /* Permission is hereby granted, free of charge, to any person obtaining  */
@@ -47,13 +49,13 @@ class VideoStreamFFMpegLoader : public ResourceFormatLoader {
 private:
     void _update_recognized_extension_cache() const;
     Ref<Resource> load_internal(const String &p_path, const String &p_original_path = "", Error *r_error = nullptr, bool p_use_sub_threads = false, float *r_progress = nullptr, CacheMode p_cache_mode = CACHE_MODE_REUSE) const;
-    bool handles_type_internal(const String &p_type) const;
 
 protected:
     static void _bind_methods() {} // Required for gdextension, do not remove;
 public:
-    String _get_resource_type(const String &p_path) const;
+    String _get_resource_type(const String &p_path) const override;
     virtual PackedStringArray _get_recognized_extensions() const override;
+    virtual bool _handles_type(const StringName &p_type) const override;
     virtual Variant _load(const String &p_path, const String &p_original_path, bool p_use_sub_threads, int32_t p_cache_mode) const override;
 };
 

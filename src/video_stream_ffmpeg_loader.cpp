@@ -1,9 +1,11 @@
 /**************************************************************************/
+/*  video_stream_ffmpeg_loader.cpp                                        */
+/**************************************************************************/
 /*                     The original file was part of:                     */
 /*                             EIRTeam.FFmpeg                             */
 /*                         https://ph.eirteam.moe                         */
 /**************************************************************************/
-/* Copyright (c) 2023-present Álex Román (EIRTeam) & contributors.        */
+/* Copyright (c) 2023-present Ãlex RomÃ¡n (EIRTeam) & contributors.        */
 /*                                                                        */
 /*                                                                        */
 /* Permission is hereby granted, free of charge, to any person obtaining  */
@@ -35,7 +37,7 @@
 extern "C" {
 #include "libavformat/avformat.h"
 }
-#include "ffmpeg_video_stream.h"
+#include "video_stream_ffmpeg.h"
 
 void VideoStreamFFMpegLoader::_update_recognized_extension_cache() const {
     if (recognized_extension_cache.size() > 0) {
@@ -56,7 +58,7 @@ void VideoStreamFFMpegLoader::_update_recognized_extension_cache() const {
 String VideoStreamFFMpegLoader::_get_resource_type(const String &p_path) const {
     _update_recognized_extension_cache();
     if (recognized_extension_cache.has(p_path.get_extension())) {
-        return "VideoStreamFFMpegLoader";
+        return "VideoStreamFFMpeg";
     }
     return "";
 }
@@ -70,7 +72,7 @@ Ref<Resource> VideoStreamFFMpegLoader::load_internal(const String &p_path, const
         return Ref<Resource>();
     }
 
-    Ref<FFmpegVideoStream> stream;
+    Ref<VideoStreamFFmpeg> stream;
     stream.instantiate();
     stream->set_file(p_path);
 
@@ -80,8 +82,9 @@ Ref<Resource> VideoStreamFFMpegLoader::load_internal(const String &p_path, const
 
     return stream;
 }
-bool VideoStreamFFMpegLoader::handles_type_internal(const String &p_type) const {
-    return p_type == "VideoStream";
+
+bool VideoStreamFFMpegLoader::_handles_type(const StringName &p_type) const {
+    return ClassDB::is_parent_class(p_type, "VideoStream");
 }
 
 PackedStringArray VideoStreamFFMpegLoader::_get_recognized_extensions() const {

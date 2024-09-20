@@ -35,4 +35,4 @@ macos =
     "res://addons/ffmpegplayer/macos64/libswscale.7.dylib": ""}
 
 [icons]
-FFmpegVideoStream = "res://addons/ffmpegplayer/icons/FFmpegVideoStream.svg"
+VideoStreamFFmpeg = "res://addons/ffmpegplayer/icons/VideoStreamFFmpeg.svg"

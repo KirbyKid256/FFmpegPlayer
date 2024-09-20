@@ -1,4 +1,6 @@
 /**************************************************************************/
+/*  command_queue_mt.cpp                                                  */
+/**************************************************************************/
 /*                     The original file was part of:                     */
 /*                             EIRTeam.FFmpeg                             */
 /*                         https://ph.eirteam.moe                         */
@@ -72,10 +74,8 @@ CommandQueueMT::SyncSemaphore *CommandQueueMT::_alloc_sync_sem() {
     return &sync_sems[idx];
 }
 
-CommandQueueMT::CommandQueueMT(bool p_sync) {
-    if (p_sync) {
-        sync = memnew(Semaphore);
-    }
+CommandQueueMT::CommandQueueMT() {
+    sync = memnew(Semaphore);
 }
 
 CommandQueueMT::~CommandQueueMT() {
