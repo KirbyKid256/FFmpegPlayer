@@ -10,6 +10,7 @@ FFmpegPlayer.dir
 *.cmake
 CMakeCache.txt
 CMakeFiles/
+Makefile
 *.sln
 
 # Godot 4+ specific ignores

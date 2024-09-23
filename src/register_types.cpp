@@ -44,7 +44,7 @@ using namespace godot;
 #include "video_stream_ffmpeg.h"
 #include "video_stream_ffmpeg_loader.h"
 
-Ref<VideoStreamFFMpegLoader> ffmpeg_loader;
+Ref<VideoStreamFFmpegLoader> ffmpeg_loader;
 
 static void print_codecs() {
     const AVCodecDescriptor *desc = NULL;
@@ -79,7 +79,7 @@ void initialize_ffmpeg_module(ModuleInitializationLevel p_level) {
     }
     print_codecs();
     GDREGISTER_ABSTRACT_CLASS(VideoStreamFFmpegPlayback);
-    GDREGISTER_ABSTRACT_CLASS(VideoStreamFFMpegLoader);
+    GDREGISTER_ABSTRACT_CLASS(VideoStreamFFmpegLoader);
     GDREGISTER_CLASS(VideoStreamFFmpeg);
     ffmpeg_loader.instantiate();
     ResourceLoader::get_singleton()->add_resource_format_loader(ffmpeg_loader);

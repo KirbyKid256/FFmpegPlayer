@@ -145,24 +145,35 @@ if(CMAKE_VERSION VERSION_GREATER "3.13")
         ${FFMPEG_DLL_PATH}
     )
 
-    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    if(FFMPEG_USE_ALIAS)
         target_link_libraries(${PROJECT_NAME}
-            libgodot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>.a
-            avcodec.61
-            avformat.61
-            avutil.59
-            swresample.5
-            swscale.8
-        )
-    else()
-        target_link_libraries(${PROJECT_NAME}
-            godot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>
+            godot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>.a
             avcodec
             avformat
             avutil
             swresample
             swscale
         )
+    else()
+        if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+            target_link_libraries(${PROJECT_NAME}
+                godot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>.a
+                avcodec-61
+                avformat-61
+                avutil-59
+                swresample-5
+                swscale-8
+            )
+        elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+            target_link_libraries(${PROJECT_NAME}
+                godot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>.a
+                avcodec.61
+                avformat.61
+                avutil.59
+                swresample.5
+                swscale.8
+            )
+        endif()
     endif()
 else()
     target_link_libraries(${PROJECT_NAME}

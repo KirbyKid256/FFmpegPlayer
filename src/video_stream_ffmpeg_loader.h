@@ -42,8 +42,8 @@
 
 using namespace godot;
 
-class VideoStreamFFMpegLoader : public ResourceFormatLoader {
-    GDCLASS(VideoStreamFFMpegLoader, ResourceFormatLoader);
+class VideoStreamFFmpegLoader : public ResourceFormatLoader {
+    GDCLASS(VideoStreamFFmpegLoader, ResourceFormatLoader);
     PackedStringArray recognized_extension_cache;
 
 private:

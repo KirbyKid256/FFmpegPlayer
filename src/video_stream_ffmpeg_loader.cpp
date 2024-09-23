@@ -39,7 +39,7 @@ extern "C" {
 }
 #include "video_stream_ffmpeg.h"
 
-void VideoStreamFFMpegLoader::_update_recognized_extension_cache() const {
+void VideoStreamFFmpegLoader::_update_recognized_extension_cache() const {
     if (recognized_extension_cache.size() > 0) {
         return;
     }
@@ -51,19 +51,19 @@ void VideoStreamFFMpegLoader::_update_recognized_extension_cache() const {
             continue;
         }
         PackedStringArray demuxer_exts = String(current_fmt->extensions).split(",", false);
-        const_cast<VideoStreamFFMpegLoader *>(this)->recognized_extension_cache.append_array(demuxer_exts);
+        const_cast<VideoStreamFFmpegLoader *>(this)->recognized_extension_cache.append_array(demuxer_exts);
     }
 }
 
-String VideoStreamFFMpegLoader::_get_resource_type(const String &p_path) const {
+String VideoStreamFFmpegLoader::_get_resource_type(const String &p_path) const {
     _update_recognized_extension_cache();
     if (recognized_extension_cache.has(p_path.get_extension())) {
-        return "VideoStreamFFMpeg";
+        return "VideoStreamFFmpeg";
     }
     return "";
 }
 
-Ref<Resource> VideoStreamFFMpegLoader::load_internal(const String &p_path, const String &p_original_path, Error *r_error, bool p_use_sub_threads, float *r_progress, CacheMode p_cache_mode) const {
+Ref<Resource> VideoStreamFFmpegLoader::load_internal(const String &p_path, const String &p_original_path, Error *r_error, bool p_use_sub_threads, float *r_progress, CacheMode p_cache_mode) const {
     Ref<FileAccess> f = FileAccess::open(p_path, FileAccess::READ);
     if (f.is_null()) {
         if (r_error) {
@@ -83,15 +83,15 @@ Ref<Resource> VideoStreamFFMpegLoader::load_internal(const String &p_path, const
     return stream;
 }
 
-bool VideoStreamFFMpegLoader::_handles_type(const StringName &p_type) const {
+bool VideoStreamFFmpegLoader::_handles_type(const StringName &p_type) const {
     return ClassDB::is_parent_class(p_type, "VideoStream");
 }
 
-PackedStringArray VideoStreamFFMpegLoader::_get_recognized_extensions() const {
+PackedStringArray VideoStreamFFmpegLoader::_get_recognized_extensions() const {
     _update_recognized_extension_cache();
     return recognized_extension_cache;
 }
 
-Variant VideoStreamFFMpegLoader::_load(const String &p_path, const String &p_original_path, bool p_use_sub_threads, int32_t p_cache_mode) const {
+Variant VideoStreamFFmpegLoader::_load(const String &p_path, const String &p_original_path, bool p_use_sub_threads, int32_t p_cache_mode) const {
     return load_internal(p_path, p_original_path, nullptr, p_use_sub_threads, nullptr, (CacheMode)p_cache_mode);
 }

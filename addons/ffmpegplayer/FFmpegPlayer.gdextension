@@ -4,35 +4,32 @@ entry_symbol = "ffmpeg_init"
 compatibility_minimum = 4.1
 
 [libraries]
-windows.debug.x86_64 = "res://addons/ffmpegplayer/win64/FFmpegPlayer.dll"
-windows.release.x86_64 = "res://addons/ffmpegplayer/win64/FFmpegPlayer.dll"
-linux.debug.x86_64 = "res://addons/ffmpegplayer/linux64/libFFmpegPlayer.so"
-linux.release.x86_64 = "res://addons/ffmpegplayer/linux64/libFFmpegPlayer.so"
-macos.debug = "res://addons/ffmpegplayer/macos/libFFmpegPlayer.dylib"
-macos.release = "res://addons/ffmpegplayer/macos/libFFmpegPlayer.dylib"
+windows.x86_64 = "res://addons/ffmpegplayer/win64/libFFmpegPlayer.dll"
+linux.x86_64 = "res://addons/ffmpegplayer/linux64/libFFmpegPlayer.so"
+macos = "res://addons/ffmpegplayer/macos/libFFmpegPlayer.dylib"
 
 [dependencies]
 windows.x86_64 =
-    {"res://addons/ffmpegplayer/win64/avcodec-60.dll": "",
-    "res://addons/ffmpegplayer/win64/avfilter-9.dll": "",
-    "res://addons/ffmpegplayer/win64/avformat-60.dll": "",
-    "res://addons/ffmpegplayer/win64/avutil-58.dll": "",
-    "res://addons/ffmpegplayer/win64/swresample-4.dll": "",
-    "res://addons/ffmpegplayer/win64/swscale-7.dll": ""}
+    {"res://addons/ffmpegplayer/win64/avcodec-61.dll": "",
+    "res://addons/ffmpegplayer/win64/avfilter-10.dll": "",
+    "res://addons/ffmpegplayer/win64/avformat-61.dll": "",
+    "res://addons/ffmpegplayer/win64/avutil-59.dll": "",
+    "res://addons/ffmpegplayer/win64/swresample-5.dll": "",
+    "res://addons/ffmpegplayer/win64/swscale-8.dll": ""}
 linux.x86_64 =
-    {"res://addons/ffmpegplayer/linux64/libavcodec.so.60": "",
-    "res://addons/ffmpegplayer/linux64/libavfilter.so.9": "",
-    "res://addons/ffmpegplayer/linux64/libavformat.so.60": "",
-    "res://addons/ffmpegplayer/linux64/libavutil.so.58": "",
-    "res://addons/ffmpegplayer/linux64/libswresample.so.4": "",
-    "res://addons/ffmpegplayer/linux64/libswscale.so.7": ""}
+    {"res://addons/ffmpegplayer/linux64/libavcodec.so.61": "",
+    "res://addons/ffmpegplayer/linux64/libavfilter.so.10": "",
+    "res://addons/ffmpegplayer/linux64/libavformat.so.61": "",
+    "res://addons/ffmpegplayer/linux64/libavutil.so.59": "",
+    "res://addons/ffmpegplayer/linux64/libswresample.so.5": "",
+    "res://addons/ffmpegplayer/linux64/libswscale.so.8": ""}
 macos =
-    {"res://addons/ffmpegplayer/macos64/libavcodec.60.dylib": "",
-    "res://addons/ffmpegplayer/macos64/libavfilter.9.dylib": "",
-    "res://addons/ffmpegplayer/macos64/libavformat.60.dylib": "",
-    "res://addons/ffmpegplayer/macos64/libavutil.58.dylib": "",
-    "res://addons/ffmpegplayer/macos64/libswresample.4.dylib": "",
-    "res://addons/ffmpegplayer/macos64/libswscale.7.dylib": ""}
+    {"res://addons/ffmpegplayer/macos/libavcodec.61.dylib": "",
+    "res://addons/ffmpegplayer/macos/libavfilter.10.dylib": "",
+    "res://addons/ffmpegplayer/macos/libavformat.61.dylib": "",
+    "res://addons/ffmpegplayer/macos/libavutil.59.dylib": "",
+    "res://addons/ffmpegplayer/macos/libswresample.5.dylib": "",
+    "res://addons/ffmpegplayer/macos/libswscale.8.dylib": ""}
 
 [icons]
 VideoStreamFFmpeg = "res://addons/ffmpegplayer/icons/VideoStreamFFmpeg.svg"
