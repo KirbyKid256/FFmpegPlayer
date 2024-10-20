@@ -17,12 +17,12 @@ windows.x86_64 =
     "res://addons/ffmpegplayer/win64/swresample-5.dll": "",
     "res://addons/ffmpegplayer/win64/swscale-8.dll": ""}
 linux.x86_64 =
-    {"res://addons/ffmpegplayer/linux64/libavcodec.so": "",
-    "res://addons/ffmpegplayer/linux64/libavfilter.so": "",
-    "res://addons/ffmpegplayer/linux64/libavformat.so": "",
-    "res://addons/ffmpegplayer/linux64/libavutil.so": "",
-    "res://addons/ffmpegplayer/linux64/libswresample.so": "",
-    "res://addons/ffmpegplayer/linux64/libswscale.so": ""}
+    {"res://addons/ffmpegplayer/linux64/libavcodec.so.61": "",
+    "res://addons/ffmpegplayer/linux64/libavfilter.so.10": "",
+    "res://addons/ffmpegplayer/linux64/libavformat.so.61": "",
+    "res://addons/ffmpegplayer/linux64/libavutil.so.59": "",
+    "res://addons/ffmpegplayer/linux64/libswresample.so.5": "",
+    "res://addons/ffmpegplayer/linux64/libswscale.so.8": ""}
 macos =
     {"res://addons/ffmpegplayer/macos/libavcodec.61.dylib": "",
     "res://addons/ffmpegplayer/macos/libavfilter.10.dylib": "",

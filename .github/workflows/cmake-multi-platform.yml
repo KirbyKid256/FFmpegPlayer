@@ -9,40 +9,34 @@ on:
 
 jobs:
   windows:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: ilammy/msvc-dev-cmd@v1
       - name: Setup Submodules
         run: |
-          sudo apt-get install mingw-w64
-          sudo apt install g++-mingw-w64-x86-64-posix
-          sudo apt install gcc-mingw-w64-x86-64-posix
-          sudo apt-get update -qq && sudo apt-get -y install libass-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libva-dev libvdpau-dev libvorbis-dev libxcb-xfixes0-dev meson ninja-build pkg-config yasm
           git submodule init
           git submodule update
       - name: Configure FFmpeg
         run: |
           cd FFmpeg
-          ./configure --enable-shared --disable-static --disable-zlib --disable-programs --disable-doc --disable-manpages --disable-podpages --disable-txtpages --disable-ffplay --disable-ffprobe --disable-ffmpeg --arch=x86_64 --target-os=mingw32 --cross-prefix=x86_64-w64-mingw32-
+          ./configure --enable-shared --disable-static --disable-zlib --disable-programs --disable-doc --disable-manpages --disable-podpages --disable-txtpages --disable-ffplay --disable-ffprobe --disable-ffmpeg --arch=x86_64 --target-os=win64 --toolchain=msvc
           make
+          make install
       - name: Generate Bindings
         run: |
           cd godot-cpp
-          cmake ./CMakeLists.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../mingw-w64-x86_64.cmake
+          cmake ./CMakeLists.txt -DCMAKE_BUILD_TYPE=Release
           make
       - name: Build GDExtension
         run: |
-          cmake ./CMakeLists.txt -DCMAKE_TOOLCHAIN_FILE=./mingw-w64-x86_64.cmake
+          cmake ./CMakeLists.txt
           make
-      - name: Package Libraries
-        run: |
-          cd ./bin/win64
-          zip -r bin-windows.zip .
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: bin-windows
-          path: bin/win64/bin-windows.zip
+          path: bin/win64
   linux:
     runs-on: ubuntu-latest
     steps:
@@ -66,15 +60,11 @@ jobs:
         run: |
           cmake ./CMakeLists.txt
           make
-      - name: Package Libraries
-        run: |
-          cd ./bin/x11
-          zip -r bin-linux.zip .
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: bin-linux
-          path: bin/x11/bin-linux.zip
+          path: bin/x11
   macos:
     runs-on: macos-latest
     steps:
@@ -98,12 +88,8 @@ jobs:
         run: |
           cmake ./CMakeLists.txt
           make
-      - name: Package Libraries
-        run: |
-          cd ./bin/macos
-          zip -r bin-macos.zip .
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: bin-macos
-          path: bin/macos/bin-macos.zip
+          path: bin/macos
