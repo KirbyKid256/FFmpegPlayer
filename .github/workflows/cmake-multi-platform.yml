@@ -8,13 +8,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  windows:
+  win64:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Setup Submodules
         run: |
-          sudo apt-get install mingw-w64
+          sudo apt install g++-mingw-w64-x86-64-posix
+          sudo apt install gcc-mingw-w64-x86-64-posix
           sudo apt-get update -qq && sudo apt-get -y install libass-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libva-dev libvdpau-dev libvorbis-dev libxcb-xfixes0-dev meson ninja-build pkg-config yasm
           git submodule init
           git submodule update
@@ -23,6 +24,20 @@ jobs:
           cd FFmpeg
           ./configure --enable-shared --disable-static --disable-zlib --disable-programs --disable-doc --disable-manpages --disable-podpages --disable-txtpages --disable-ffplay --disable-ffprobe --disable-ffmpeg --arch=x86_64 --target-os=mingw32 --cross-prefix=x86_64-w64-mingw32-
           make
+      - name: Package Libraries
+        run: |
+          mkdir libs
+          mv ./FFmpeg/libavcodec/avcodec-61.dll ./libs/avcodec-61.dll
+          mv ./FFmpeg/libavfilter/avfilter-10.dll ./libs/avfilter-10.dll
+          mv ./FFmpeg/libavformat/avformat-61.dll ./libs/avformat-61.dll
+          mv ./FFmpeg/libavutil/avutil-59.dll ./libs/avutil-59.dll
+          mv ./FFmpeg/libswresample/swresample-5.dll ./libs/swresample-5.dll
+          mv ./FFmpeg/libswscale/swscale-8.dll ./libs/swscale-8.dll
+      - name: Upload Libraries
+        uses: actions/upload-artifact@v4
+        with:
+          name: lib-windows
+          path: libs
       - name: Generate Bindings
         run: |
           cd godot-cpp
@@ -32,12 +47,12 @@ jobs:
         run: |
           cmake ./CMakeLists.txt -DCMAKE_TOOLCHAIN_FILE=./mingw-w64-x86_64.cmake
           make
-      - name: Upload Artifacts
+      - name: Upload GDExtension
         uses: actions/upload-artifact@v4
         with:
           name: bin-windows
           path: bin/win64
-  linux:
+  linux64:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -51,6 +66,20 @@ jobs:
           cd FFmpeg
           ./configure --enable-pthreads --enable-shared --disable-static --disable-zlib --disable-programs --disable-doc --disable-manpages --disable-podpages --disable-txtpages --disable-ffplay --disable-ffprobe --disable-ffmpeg --arch=x86_64
           make
+      - name: Package Libraries
+        run: |
+          mkdir libs
+          mv ./FFmpeg/libavcodec/libavcodec.so.61 ./libs/libavcodec.so.61
+          mv ./FFmpeg/libavfilter/libavfilter.so.10 ./libs/libavfilter.so.10
+          mv ./FFmpeg/libavformat/libavformat.so.61 ./libs/libavformat.so.61
+          mv ./FFmpeg/libavutil/libavutil.so.59 ./libs/libavutil.so.59
+          mv ./FFmpeg/libswresample/libswresample.so.5 ./libs/libswresample.so.5
+          mv ./FFmpeg/libswscale/libswscale.so.8 ./libs/libswscale.so.8
+      - name: Upload Libraries
+        uses: actions/upload-artifact@v4
+        with:
+          name: lib-linux
+          path: libs
       - name: Generate Bindings
         run: |
           cd godot-cpp
@@ -60,7 +89,7 @@ jobs:
         run: |
           cmake ./CMakeLists.txt
           make
-      - name: Upload Artifacts
+      - name: Upload GDExtension
         uses: actions/upload-artifact@v4
         with:
           name: bin-linux
@@ -79,6 +108,20 @@ jobs:
           cd FFmpeg
           ./configure --enable-pthreads --enable-shared --disable-static --disable-zlib --disable-programs --disable-doc --disable-manpages --disable-podpages --disable-txtpages --disable-ffplay --disable-ffprobe --disable-ffmpeg --arch=x86_64 --cc='clang -arch x86_64'
           make
+      - name: Package Libraries
+        run: |
+          mkdir libs
+          mv ./FFmpeg/libavcodec/libavcodec.61.dylib ./libs/libavcodec.61.dylib
+          mv ./FFmpeg/libavfilter/libavfilter.10.dylib ./libs/libavfilter.10.dylib
+          mv ./FFmpeg/libavformat/libavformat.61.dylib ./libs/libavformat.61.dylib
+          mv ./FFmpeg/libavutil/libavutil.59.dylib ./libs/libavutil.59.dylib
+          mv ./FFmpeg/libswresample/libswresample.5.dylib ./libs/libswresample.5.dylib
+          mv ./FFmpeg/libswscale/libswscale.8.dylib ./libs/libswscale.8.dylib
+      - name: Upload Libraries
+        uses: actions/upload-artifact@v4
+        with:
+          name: lib-macos
+          path: libs
       - name: Generate Bindings
         run: |
           cd godot-cpp
@@ -88,7 +131,7 @@ jobs:
         run: |
           cmake ./CMakeLists.txt
           make
-      - name: Upload Artifacts
+      - name: Upload GDExtension
         uses: actions/upload-artifact@v4
         with:
           name: bin-macos

@@ -10,7 +10,8 @@ macos = "res://addons/ffmpegplayer/macos/libFFmpegPlayer.dylib"
 
 [dependencies]
 windows.x86_64 =
-    {"res://addons/ffmpegplayer/win64/avcodec-61.dll": "",
+    {"res://addons/ffmpegplayer/win64/libwinpthread-1.dll": "",
+    "res://addons/ffmpegplayer/win64/avcodec-61.dll": "",
     "res://addons/ffmpegplayer/win64/avfilter-10.dll": "",
     "res://addons/ffmpegplayer/win64/avformat-61.dll": "",
     "res://addons/ffmpegplayer/win64/avutil-59.dll": "",
