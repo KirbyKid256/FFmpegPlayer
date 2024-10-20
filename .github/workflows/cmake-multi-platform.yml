@@ -25,11 +25,11 @@ jobs:
       - name: Generate Bindings
         run: |
           cd godot-cpp
-          cmake ./CMakeLists.txt -DCMAKE_BUILD_TYPE=Release
+          cmake ./CMakeLists.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../mingw-w64-x86_64.cmake
           make
       - name: Build GDExtension
         run: |
-          cmake ./CMakeLists.txt
+          cmake ./CMakeLists.txt -DCMAKE_TOOLCHAIN_FILE=./mingw-w64-x86_64.cmake
           make
       - name: Package Libraries
         run: |
