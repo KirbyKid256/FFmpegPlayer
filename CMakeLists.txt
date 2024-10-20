@@ -6,6 +6,12 @@ set(GODOT_GDEXTENSION_DIR godot-cpp/gdextension/ CACHE STRING "Path to GDExtensi
 set(CPP_BINDINGS_PATH godot-cpp/ CACHE STRING "Path to C++ bindings")
 set(FFMPEG_DIR FFmpeg/ CACHE STRING "Path to FFmpeg directory and included headers")
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+    set(THREADS_PREFER_PTHREAD_FLAG TRUE)
+    find_package(Threads REQUIRED)
+endif()
+
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     set(TARGET_PATH x11)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
