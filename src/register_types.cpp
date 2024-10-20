@@ -77,7 +77,7 @@ void initialize_ffmpeg_module(ModuleInitializationLevel p_level) {
     if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
         return;
     }
-    print_codecs();
+    // print_codecs();
     GDREGISTER_ABSTRACT_CLASS(VideoStreamFFmpegPlayback);
     GDREGISTER_ABSTRACT_CLASS(VideoStreamFFmpegLoader);
     GDREGISTER_CLASS(VideoStreamFFmpeg);
