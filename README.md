@@ -81,6 +81,20 @@ Once the setup is complete, build the libraries using the following commands in 
 make
 ```
 
+To cross-compile to Windows from a Unix system, use these commands:
+
+```sh
+./configure --enable-shared --disable-static --disable-zlib --disable-programs --disable-doc --disable-manpages --disable-podpages --disable-txtpages --disable-ffplay --disable-ffprobe --disable-ffmpeg --arch=x86_64 --target-os=mingw32 --cross-prefix=x86_64-w64-mingw32-
+make
+```
+
+To cross-compile to MacOS from Linux, install the [homebrew-macos-cross-toolchains](https://github.com/messense/homebrew-macos-cross-toolchains), then use these commands:
+
+```sh
+./configure --enable-pthreads --enable-shared --disable-static --disable-zlib --disable-programs --disable-doc --disable-manpages --disable-podpages --disable-txtpages --disable-ffplay --disable-ffprobe --disable-ffmpeg --arch=x86_64  --target-os=linux --cross-prefix=x86_64-linux-gnu-
+make
+```
+
 After building, there should be several new files inside FFmpeg. Copy these files into `FFmpegPlayer/libraries/x64`, Their name may be slightly different than what's listed below depending on the version you've compiled, but should still be easy to find using these folders:
 
 * avcodec

@@ -24,12 +24,11 @@ jobs:
           make
       - name: Generate Bindings
         run: |
-          cd ../godot-cpp
+          cd godot-cpp
           cmake ./CMakeLists.txt -DCMAKE_BUILD_TYPE=Release
           make
       - name: Build GDExtension
         run: |
-          cd ..
           cmake ./CMakeLists.txt
           make
       - name: Package Libraries
@@ -57,12 +56,11 @@ jobs:
           make
       - name: Generate Bindings
         run: |
-          cd ../godot-cpp
+          cd godot-cpp
           cmake ./CMakeLists.txt -DCMAKE_BUILD_TYPE=Release
           make
       - name: Build GDExtension
         run: |
-          cd ..
           cmake ./CMakeLists.txt
           make
       - name: Package Libraries
@@ -80,22 +78,21 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup Submodules
         run: |
-          brew install yasm
+          brew install yasm automake fdk-aac lame libass libtool libvorbis libvpx opus sdl shtool texi2html theora wget x264 x265 xvid nasm
           git submodule init
           git submodule update
       - name: Configure FFmpeg
         run: |
           cd FFmpeg
-          ./configure --enable-pthreads --enable-shared --disable-static --disable-zlib --disable-programs --disable-doc --disable-manpages --disable-podpages --disable-txtpages --disable-ffplay --disable-ffprobe --disable-ffmpeg --arch=x86_64
+          ./configure --enable-pthreads --enable-shared --disable-static --disable-zlib --disable-programs --disable-doc --disable-manpages --disable-podpages --disable-txtpages --disable-ffplay --disable-ffprobe --disable-ffmpeg --arch=x86_64 --cc='clang -arch x86_64'
           make
       - name: Generate Bindings
         run: |
-          cd ../godot-cpp
+          cd godot-cpp
           cmake ./CMakeLists.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=x86_64
           make
       - name: Build GDExtension
         run: |
-          cd ..
           cmake ./CMakeLists.txt
           make
       - name: Package Libraries
