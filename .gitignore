@@ -8,6 +8,7 @@ FFmpegPlayer.dir
 *.filters
 *.user
 *.cmake
+!mingw-w64-x86_64.cmake
 CMakeCache.txt
 CMakeFiles/
 Makefile
