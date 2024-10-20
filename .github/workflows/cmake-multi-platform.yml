@@ -23,8 +23,8 @@ jobs:
       #
       # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
       matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
         build_type: [Release]
-        c_compiler: [gcc]
         include:
           - os: windows-latest
             c_compiler: gcc
@@ -59,6 +59,8 @@ jobs:
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       run: |
+        git submodule init
+        git submodule update
         cd godot-cpp
         cmake ./CMakeLists.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=x86_64
         make
