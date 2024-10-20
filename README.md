@@ -116,8 +116,6 @@ cmake ./CMakeLists.txt
 make
 ```
 
-If you want to use symbolic links in place of the libraries, you can append `-DFFMPEG_USE_ALIAS` to the first line above and place the links in the `libraries` folder.
-
 This will create the main library in the bin folder with your OS. Finally, copy all the FFmpeg libraries you put in the `libraries` folder and the ones in the `bin` folder, into the respective OS's directory inside the addon.
 
 ### Test Godot Project
