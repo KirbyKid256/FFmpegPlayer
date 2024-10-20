@@ -15,6 +15,11 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
       - name: Setup Submodules
         run: |
+          pacman -S make
+          pacman -S diffutils
+          pacman -S yasm
+          pacman -S mingw-w64-x86_64-gcc
+          pacman -S pkg-config
           git submodule init
           git submodule update
       - name: Configure FFmpeg
@@ -22,7 +27,6 @@ jobs:
           cd FFmpeg
           ./configure --enable-shared --disable-static --disable-zlib --disable-programs --disable-doc --disable-manpages --disable-podpages --disable-txtpages --disable-ffplay --disable-ffprobe --disable-ffmpeg --arch=x86_64 --target-os=win64 --toolchain=msvc
           make
-          make install
       - name: Generate Bindings
         run: |
           cd godot-cpp
