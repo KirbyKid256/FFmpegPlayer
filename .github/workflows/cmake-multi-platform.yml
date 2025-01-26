@@ -14,9 +14,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup Submodules
         run: |
-          sudo apt install g++-mingw-w64-x86-64-posix
-          sudo apt install gcc-mingw-w64-x86-64-posix
-          sudo apt-get update -qq && sudo apt-get -y install libass-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libva-dev libvdpau-dev libvorbis-dev libxcb-xfixes0-dev meson ninja-build pkg-config yasm
+          sudo apt install g++-mingw-w64-x86-64-posix && sudo apt install gcc-mingw-w64-x86-64-posix
+          sudo apt-get update && sudo apt-get install subversion ragel curl texinfo g++ ed bison flex cvs yasm automake libtool autoconf gcc cmake git make pkg-config zlib1g-dev unzip pax nasm gperf autogen bzip2 autoconf-archive p7zip-full meson clang python3-distutils python-is-python3 -y
           git submodule init
           git submodule update
       - name: Configure FFmpeg
@@ -63,7 +62,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup Submodules
         run: |
-          sudo apt-get update -qq && sudo apt-get -y install libass-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libva-dev libvdpau-dev libvorbis-dev libxcb-xfixes0-dev meson ninja-build pkg-config yasm
+          sudo apt-get update -qq && sudo apt-get -y install libass-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libva-dev libvdpau-dev libvorbis-dev libxcb-xfixes0-dev meson ninja-build pkg-config yasm nasm
           git submodule init
           git submodule update
       - name: Configure FFmpeg
