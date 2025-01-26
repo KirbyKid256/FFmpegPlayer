@@ -15,7 +15,8 @@ jobs:
       - name: Setup Submodules
         run: |
           sudo apt install g++-mingw-w64-x86-64-posix && sudo apt install gcc-mingw-w64-x86-64-posix
-          sudo apt-get update && sudo apt-get install subversion ragel curl texinfo g++ ed bison flex cvs yasm automake libtool autoconf gcc cmake git make pkg-config zlib1g-dev unzip pax nasm gperf autogen bzip2 autoconf-archive p7zip-full meson clang python-is-python3 -y
+          sudo apt-get update -qq && sudo apt-get install subversion ragel curl texinfo g++ ed bison flex cvs yasm automake libtool autoconf gcc cmake git make pkg-config zlib1g-dev unzip pax nasm gperf autogen bzip2 autoconf-archive p7zip-full meson clang python-is-python3 -y
+          sudo apt-get install libass-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libva-dev libvdpau-dev libvorbis-dev libxcb-xfixes0-dev ninja-build autotools-dev -y
           git submodule init
           git submodule update
       - name: Configure FFmpeg
@@ -37,11 +38,6 @@ jobs:
         with:
           name: lib-windows
           path: libs
-      - name: Upload Sandbox (Temporary Check To See WTF Is Going On)
-        uses: actions/upload-artifact@v4
-        with:
-          name: sandbox-windows
-          path: ffmpeg-windows-build-helpers/sandbox
       - name: Generate Bindings
         run: |
           cd godot-cpp
