@@ -21,23 +21,28 @@ jobs:
           git submodule update
       - name: Configure FFmpeg
         run: |
-          cd FFmpeg
-          ./configure --enable-shared --disable-static --disable-zlib --disable-programs --disable-doc --disable-manpages --disable-podpages --disable-txtpages --disable-ffplay --disable-ffprobe --disable-ffmpeg --arch=x86_64 --target-os=mingw32 --cross-prefix=x86_64-w64-mingw32-
-          make
+          git clone https://github.com/rdp/ffmpeg-windows-build-helpers.git
+          cd ffmpeg-windows-build-helpers
+          ./cross_compile_ffmpeg.sh --build-ffmpeg-static=n --build-ffmpeg-shared=y --gcc-cpu-count=3 --compiler-flavors=multi --enable-gpl=n --disable-nonfree=y
       - name: Package Libraries
         run: |
           mkdir libs
-          mv ./FFmpeg/libavcodec/avcodec-61.dll ./libs/avcodec-61.dll
-          mv ./FFmpeg/libavfilter/avfilter-10.dll ./libs/avfilter-10.dll
-          mv ./FFmpeg/libavformat/avformat-61.dll ./libs/avformat-61.dll
-          mv ./FFmpeg/libavutil/avutil-59.dll ./libs/avutil-59.dll
-          mv ./FFmpeg/libswresample/swresample-5.dll ./libs/swresample-5.dll
-          mv ./FFmpeg/libswscale/swscale-8.dll ./libs/swscale-8.dll
+          mv ./ffmpeg-windows-build-helpers/sandbox/win64/ffmpeg_git_lgpl_master_shared/bin/libavcodec/avcodec-61.dll ./libs/avcodec-61.dll
+          mv ./ffmpeg-windows-build-helpers/sandbox/win64/ffmpeg_git_lgpl_master_shared/bin/libavfilter/avfilter-10.dll ./libs/avfilter-10.dll
+          mv ./ffmpeg-windows-build-helpers/sandbox/win64/ffmpeg_git_lgpl_master_shared/bin/libavformat/avformat-61.dll ./libs/avformat-61.dll
+          mv ./ffmpeg-windows-build-helpers/sandbox/win64/ffmpeg_git_lgpl_master_shared/bin/libavutil/avutil-59.dll ./libs/avutil-59.dll
+          mv ./ffmpeg-windows-build-helpers/sandbox/win64/ffmpeg_git_lgpl_master_shared/bin/libswresample/swresample-5.dll ./libs/swresample-5.dll
+          mv ./ffmpeg-windows-build-helpers/sandbox/win64/ffmpeg_git_lgpl_master_shared/bin/libswscale/swscale-8.dll ./libs/swscale-8.dll
       - name: Upload Libraries
         uses: actions/upload-artifact@v4
         with:
           name: lib-windows
           path: libs
+      - name: Upload Sandbox (Temporary Check To See WTF Is Going On)
+        uses: actions/upload-artifact@v4
+        with:
+          name: sandbox-windows
+          path: ffmpeg-windows-build-helpers/sandbox
       - name: Generate Bindings
         run: |
           cd godot-cpp

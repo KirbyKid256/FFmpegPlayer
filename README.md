@@ -66,25 +66,18 @@ However, if you don't know how to use the helpers, or you keep getting errors tr
 
 Due to the fact that FFmpeg updates incredibly frequently, it's recommended to use a specific commit for compiling for each OS.
 
-* The commit currently used for FFmpegPlayer is [a577d31](https://github.com/FFmpeg/FFmpeg/commit/a577d313b2c14c855ab8aa69bbe3527bd7727212)
+* The commit currently used for FFmpegPlayer is [a577d31](https://github.com/FFmpeg/FFmpeg/commit/712140be75d11e6ac83f06a39352e5b4686f7558)
 * You can reset to this commit by running these commands from the root folder:
 
 ```sh
 cd FFmpeg
-git reset --hard a577d313b2c14c855ab8aa69bbe3527bd7727212
+git reset --hard 712140be75d11e6ac83f06a39352e5b4686f7558
 ```
 
 Once the setup is complete, build the libraries using the following commands in the FFmpeg submodule:
 
 ```sh
 ./configure --enable-pthreads --enable-shared --disable-static --disable-zlib --disable-programs --disable-doc --disable-manpages --disable-podpages --disable-txtpages --disable-ffplay --disable-ffprobe --disable-ffmpeg --arch=x86_64
-make
-```
-
-To cross-compile to Windows from a Unix system, use these commands:
-
-```sh
-./configure --enable-shared --disable-static --disable-zlib --disable-programs --disable-doc --disable-manpages --disable-podpages --disable-txtpages --disable-ffplay --disable-ffprobe --disable-ffmpeg --arch=x86_64 --target-os=mingw32 --cross-prefix=x86_64-w64-mingw32-
 make
 ```
 
