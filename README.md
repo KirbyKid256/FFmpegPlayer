@@ -36,7 +36,8 @@ You can also use the build tools from [EIRTeam.FFmpeg](https://github.com/EIRTea
 The libraries can be built easily using [ffmpeg-windows-build-helpers](https://github.com/rdp/ffmpeg-windows-build-helpers) on a **Linux system or Virtual Machine**. Before running the script, you'll need to install these dependencies:
 
 ```sh
-sudo apt-get update && sudo apt-get install subversion ragel curl texinfo g++ ed bison flex cvs yasm automake libtool autoconf gcc cmake make pkg-config zlib1g-dev unzip pax nasm gperf autogen bzip2 autoconf-archive p7zip-full meson clang python-is-python3 -y
+sudo apt-get update
+sudo apt-get install subversion ragel curl texinfo g++ ed bison flex cvs yasm automake libtool autoconf gcc cmake make pkg-config zlib1g-dev unzip pax nasm gperf autogen bzip2 autoconf-archive p7zip-full meson clang python-is-python3 -y
 ```
 
 To compile the Godot CPP Bindings and GDExtension for Windows on Linux, you'll also need to install these:
@@ -57,7 +58,8 @@ After building, the needed contents are found inside `sandbox/win64/ffmpeg_git_l
 Before continuing, ensure you have all of the dependencies required for configuring FFmpeg:
 
 ```sh
-sudo apt-get update -qq && sudo apt-get install libass-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libva-dev libvdpau-dev libvorbis-dev libxcb-xfixes0-dev meson ninja-build pkg-config yasm nasm -y
+sudo apt-get update
+sudo apt-get install libass-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libva-dev libvdpau-dev libvorbis-dev libxcb-xfixes0-dev meson ninja-build pkg-config yasm nasm -y
 ```
 
 ### macOS Setup

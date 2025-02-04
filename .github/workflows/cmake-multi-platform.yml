@@ -1,57 +1,10 @@
 name: CMake Multi-Platform
 
 on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
   workflow_dispatch:
 
 jobs:
-  win64:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Submodules
-        run: |
-          sudo apt-get update && sudo apt-get install subversion ragel curl texinfo g++ ed bison flex cvs yasm automake libtool autoconf gcc cmake make pkg-config zlib1g-dev unzip pax nasm gperf autogen bzip2 autoconf-archive p7zip-full meson clang python-is-python3 -y
-          sudo apt install g++-mingw-w64-x86-64-posix -y
-          git submodule init
-          git submodule update
-      - name: Configure FFmpeg
-        run: |
-          git clone https://github.com/rdp/ffmpeg-windows-build-helpers.git
-          cd ffmpeg-windows-build-helpers
-          ./cross_compile_ffmpeg.sh --build-ffmpeg-static=n --build-ffmpeg-shared=y --gcc-cpu-count=3 --compiler-flavors=multi --enable-gpl=n --disable-nonfree=y
-      - name: Package Libraries
-        run: |
-          mkdir libs
-          mv ./ffmpeg-windows-build-helpers/sandbox/win64/ffmpeg_git_lgpl_master_shared/bin/libavcodec/avcodec-61.dll ./libs/avcodec-61.dll
-          mv ./ffmpeg-windows-build-helpers/sandbox/win64/ffmpeg_git_lgpl_master_shared/bin/libavfilter/avfilter-10.dll ./libs/avfilter-10.dll
-          mv ./ffmpeg-windows-build-helpers/sandbox/win64/ffmpeg_git_lgpl_master_shared/bin/libavformat/avformat-61.dll ./libs/avformat-61.dll
-          mv ./ffmpeg-windows-build-helpers/sandbox/win64/ffmpeg_git_lgpl_master_shared/bin/libavutil/avutil-59.dll ./libs/avutil-59.dll
-          mv ./ffmpeg-windows-build-helpers/sandbox/win64/ffmpeg_git_lgpl_master_shared/bin/libswresample/swresample-5.dll ./libs/swresample-5.dll
-          mv ./ffmpeg-windows-build-helpers/sandbox/win64/ffmpeg_git_lgpl_master_shared/bin/libswscale/swscale-8.dll ./libs/swscale-8.dll
-      - name: Upload Libraries
-        uses: actions/upload-artifact@v4
-        with:
-          name: lib-windows
-          path: libs
-      - name: Generate Bindings
-        run: |
-          cd godot-cpp
-          cmake ./CMakeLists.txt -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../mingw-w64-x86_64.cmake
-          make
-      - name: Build GDExtension
-        run: |
-          cmake ./CMakeLists.txt -DCMAKE_TOOLCHAIN_FILE=./mingw-w64-x86_64.cmake
-          make
-      - name: Upload GDExtension
-        uses: actions/upload-artifact@v4
-        with:
-          name: bin-windows
-          path: bin/win64
-  linux64:
+  linux:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
