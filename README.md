@@ -19,25 +19,53 @@ This GDExtension uses [CMake](https://cmake.org/) to build the libraries.
 
 * You can also install CMake through Homebrew with `brew install cmake`. If you don't have Homebrew, follow the installation instructions [here](https://brew.sh/) to install it.
 
-Submodules of the [Godot C++ Bindings](https://github.com/godotengine/godot-cpp) and [FFmpeg](https://github.com/FFmpeg/FFmpeg) are included. You will need to run `git submodule init` within the root folder to get them to work. For the bindings and GDExtension, the minimum is `4.1`, however you can upgrade it to a later version if you desire.
+Before continuing, I will assume you already have [Git](https://git-scm.com/downloads) installed. However if you do not, you will need to install it beforehand because the Code Blocks for installing dependencies will NOT contain Git.
+
+Submodules of the [Godot C++ Bindings](https://github.com/godotengine/godot-cpp) and [FFmpeg](https://github.com/FFmpeg/FFmpeg) are included. You will need to run `git submodule init && git submodule update` within the root folder to get them to work. For the bindings and GDExtension, the minimum is `4.1`, however you can upgrade it to a later version if you desire.
 
 The FFmpeg libraries for Windows, Linux, and macOS are included and do not need to be rebuilt. However you could also update them as well. Before doing so, you may need to rename `time.h` to `fftime.h` to fix file name conflicts on compilation of the GDExtension.
 
-Built binaries need to be manually copied into the `addons/ffmpegplayer/win64` directory, or `../linux64`, `../macos`, etc. There isn't a build script to copy them, sorry.
+Built binaries need to be manually copied into the `addons/ffmpegplayer/win64` directory, or `../linux64`, `../macos`, etc. There isn't a build script to copy them over, sorry.
 
 You can also use the build tools from [EIRTeam.FFmpeg](https://github.com/EIRTeam/EIRTeam.FFmpeg) to create the libraries. However, the FFmpeg libraries will need to be changed out for license compliance.
 
 ### Windows Setup
 
-TBA
+The libraries can be built easily using [ffmpeg-windows-build-helpers](https://github.com/rdp/ffmpeg-windows-build-helpers) on a **Linux system or Virtual Machine**. Before running the script, you'll need to install these dependencies:
+
+```sh
+sudo apt-get update && sudo apt-get install subversion ragel curl texinfo g++ ed bison flex cvs yasm automake libtool autoconf gcc cmake make pkg-config zlib1g-dev unzip pax nasm gperf autogen bzip2 autoconf-archive p7zip-full meson clang python-is-python3 -y
+```
+
+To compile the Godot CPP Bindings and GDExtension for Windows on Linux, you'll also need to install these:
+```sh
+sudo apt install g++-mingw-w64-x86-64-posix gcc-mingw-w64-x86-64-posix
+```
+
+Once you have all the dependencies, use the following command in the Build Helpers root:
+
+```sh
+./cross_compile_ffmpeg.sh --build-ffmpeg-static=n --build-ffmpeg-shared=y --gcc-cpu-count=3 --compiler-flavors=multi --enable-gpl=n --disable-nonfree=y
+```
+
+After building, the needed contents are found inside `sandbox/win64/ffmpeg_git_lgpl_master_shared/bin`. Yes, creating a whole Linux install just to use this tool is easier than trying to build FFmpeg on Windows.
 
 ### Linux Setup
 
-TBA
+Before continuing, ensure you have all of the dependencies required for configuring FFmpeg:
+
+```sh
+sudo apt-get update -qq && sudo apt-get install libass-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libva-dev libvdpau-dev libvorbis-dev libxcb-xfixes0-dev meson ninja-build pkg-config yasm nasm -y
+```
 
 ### macOS Setup
 
 Before continuing, ensure XCode, XCode Command Line Tools, and CMake are all installed. You can get XCode for free on the App Store. To install all the XCode tools, run `xcode-select --install`. This will include the Command Line Tools.
+
+Then, to install the dependencies, you'll need to install [HomeBrew](https://brew.sh/) first, then run the following command:
+```sh
+brew install yasm automake fdk-aac lame libass libtool libvorbis libvpx opus sdl12-compat shtool texi2html theora x264 x265 xvid nasm
+```
 
 ### Build Godot Bindings
 
@@ -48,30 +76,22 @@ cmake ./CMakeLists.txt -DCMAKE_BUILD_TYPE=Release
 make
 ```
 
-For macOS, append the flag `-DCMAKE_OSX_ARCHITECTURES=x86_64`.
+For compiling for Windows on Linux, append this flag to the above: `-DCMAKE_TOOLCHAIN_FILE=../mingw-w64-x86_64.cmake`. For macOS, append this flag instead: `-DCMAKE_OSX_ARCHITECTURES=x86_64`.
 
 ### Building FFmpeg
 
-The libraries can be built easily using [ffmpeg-windows-build-helpers](https://github.com/rdp/ffmpeg-windows-build-helpers) on a **Linux system** using the following command line:
-
-```sh
-./cross_compile_ffmpeg.sh --build-ffmpeg-static=n --build-ffmpeg-shared=y --gcc-cpu-count=3 --compiler-flavors=multi --enable-gpl=n --disable-nonfree=y
-```
-
-After building, the needed contents are found inside `sandbox/win64/ffmpeg_git_lgpl_master_shared/bin`. Yes, creating a whole Linux install just to use this tool is easier than trying to build FFmpeg on Windows.
-
-However, if you don't know how to use the helpers, or you keep getting errors trying to use it, you can alternatively use the configure file.
+If you're building for Windows, you can skip this next sub-section. However, if you are not compiling for Windows, this next section applies to both Linux and MacOS.
 
 #### Using FFmpeg Configure
 
-Due to the fact that FFmpeg updates incredibly frequently, it's recommended to use a specific commit for compiling for each OS.
+Due to the fact that FFmpeg updates incredibly frequently, it's recommended to use a specific commit for compiling for each OS. However, it is not required.
 
-* The commit currently used for FFmpegPlayer is [a577d31](https://github.com/FFmpeg/FFmpeg/commit/712140be75d11e6ac83f06a39352e5b4686f7558)
+* The commit currently used for FFmpegPlayer is [4307008](https://github.com/FFmpeg/FFmpeg/commit/4307008b9a81ae3322f742f557192ccc52517be2)
 * You can reset to this commit by running these commands from the root folder:
 
 ```sh
 cd FFmpeg
-git reset --hard 712140be75d11e6ac83f06a39352e5b4686f7558
+git reset --hard 4307008b9a81ae3322f742f557192ccc52517be2
 ```
 
 Once the setup is complete, build the libraries using the following commands in the FFmpeg submodule:
@@ -108,6 +128,8 @@ To build the GDExtension, open Terminal and set the current directory to the roo
 cmake ./CMakeLists.txt
 make
 ```
+
+If you're compiling for Windows on Linux, you would append the same flag used earlier for the CPP Bindings.
 
 This will create the main library in the bin folder with your OS. Finally, copy all the FFmpeg libraries you put in the `libraries` folder and the ones in the `bin` folder, into the respective OS's directory inside the addon.
 
