@@ -16,10 +16,10 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install libass-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libva-dev libvdpau-dev libvorbis-dev libxcb-xfixes0-dev meson ninja-build pkg-config yasm nasm -y
           git submodule init && git submodule update
+          rm -r FFmpeg && git clone https://github.com/FFmpeg/FFmpeg
       - name: Configure FFmpeg
         run: |
           cd FFmpeg
-          git fetch && git pull
           ./configure --enable-pthreads --enable-shared --disable-static --disable-zlib --disable-programs --disable-doc --disable-manpages --disable-podpages --disable-txtpages --disable-ffplay --disable-ffprobe --disable-ffmpeg --arch=x86_64
           make
       - name: Package Libraries
@@ -58,10 +58,10 @@ jobs:
         run: |
           brew install yasm automake fdk-aac lame libass libtool libvorbis libvpx opus sdl12-compat shtool texi2html theora x264 x265 xvid nasm
           git submodule init && git submodule update
+          rm -r FFmpeg && git clone https://github.com/FFmpeg/FFmpeg
       - name: Configure FFmpeg
         run: |
           cd FFmpeg
-          git fetch && git pull
           ./configure --enable-pthreads --enable-shared --disable-static --disable-zlib --disable-programs --disable-doc --disable-manpages --disable-podpages --disable-txtpages --disable-ffplay --disable-ffprobe --disable-ffmpeg --arch=x86_64 --cc='clang -arch x86_64'
           make
       - name: Package Libraries
