@@ -19,7 +19,7 @@ jobs:
       - name: Configure FFmpeg
         run: |
           cd FFmpeg
-          git fetch && git update
+          git fetch && git pull
           ./configure --enable-pthreads --enable-shared --disable-static --disable-zlib --disable-programs --disable-doc --disable-manpages --disable-podpages --disable-txtpages --disable-ffplay --disable-ffprobe --disable-ffmpeg --arch=x86_64
           make
       - name: Package Libraries
@@ -61,7 +61,7 @@ jobs:
       - name: Configure FFmpeg
         run: |
           cd FFmpeg
-          git fetch && git update
+          git fetch && git pull
           ./configure --enable-pthreads --enable-shared --disable-static --disable-zlib --disable-programs --disable-doc --disable-manpages --disable-podpages --disable-txtpages --disable-ffplay --disable-ffprobe --disable-ffmpeg --arch=x86_64 --cc='clang -arch x86_64'
           make
       - name: Package Libraries

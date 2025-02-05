@@ -134,7 +134,7 @@ After building, there should be several new files inside FFmpeg. Copy these file
 * swresample
 * swscale
 
-If compiled for Windows, these files will be formated as "[folder]-[ver].dll" with the prior path being `./ffmpeg-windows-build-helpers/sandbox/win64/ffmpeg_git_lgpl_master_shared/bin`. If compiled for Linux, they will be formatted like "lib[folder].so.[ver]". If compiled for macOS, the files will be "lib[folder].[ver].dylib". For Linux and MacOS, the path would just be `./FFmpeg`.
+If compiled for Windows, these files will be formated as "[folder]-[ver].dll" and "[folder].lib" with the prior path being `./ffmpeg-windows-build-helpers/sandbox/win64/ffmpeg_git_lgpl_master_shared/bin`. If compiled for Linux, they will be formatted like "lib[folder].so.[ver]". If compiled for macOS, the files will be "lib[folder].[ver].dylib". For Linux and MacOS, the path would just be `./FFmpeg`.
 
 ### Build GDExtension
 
