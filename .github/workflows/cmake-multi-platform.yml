@@ -26,11 +26,15 @@ jobs:
         run: |
           mkdir libs
           mv ./FFmpeg/libavcodec/libavcodec.so.61 ./libs/libavcodec.so.61
-          mv ./FFmpeg/libavfilter/libavfilter.so.10 ./libs/libavfilter.so.10
           mv ./FFmpeg/libavformat/libavformat.so.61 ./libs/libavformat.so.61
           mv ./FFmpeg/libavutil/libavutil.so.59 ./libs/libavutil.so.59
           mv ./FFmpeg/libswresample/libswresample.so.5 ./libs/libswresample.so.5
           mv ./FFmpeg/libswscale/libswscale.so.8 ./libs/libswscale.so.8
+          cp -f ./libs/libavcodec.so.61 ./libraries/x64/libavcodec.so
+          cp -f ./libs/libavformat.so.61 ./libraries/x64/libavformat.so
+          cp -f ./libs/libavutil.so.59 ./libraries/x64/libavutil.so
+          cp -f ./libs/libswresample.so.5 ./libraries/x64/libswresample.so
+          cp -f ./libs/libswscale.so.8 ./libraries/x64/libswscale.so
       - name: Upload Libraries
         uses: actions/upload-artifact@v4
         with:
@@ -68,11 +72,15 @@ jobs:
         run: |
           mkdir libs
           mv ./FFmpeg/libavcodec/libavcodec.61.dylib ./libs/libavcodec.61.dylib
-          mv ./FFmpeg/libavfilter/libavfilter.10.dylib ./libs/libavfilter.10.dylib
           mv ./FFmpeg/libavformat/libavformat.61.dylib ./libs/libavformat.61.dylib
           mv ./FFmpeg/libavutil/libavutil.59.dylib ./libs/libavutil.59.dylib
           mv ./FFmpeg/libswresample/libswresample.5.dylib ./libs/libswresample.5.dylib
           mv ./FFmpeg/libswscale/libswscale.8.dylib ./libs/libswscale.8.dylib
+          cp -f ./libs/libavcodec.61.dylib ./libraries/x64/libavcodec.61.dylib
+          cp -f ./libs/libavformat.61.dylib ./libraries/x64/libavformat.61.dylib
+          cp -f ./libs/libavutil.59.dylib ./libraries/x64/libavutil.59.dylib
+          cp -f ./libs/libswresample.5.dylib ./libraries/x64/libswresample.5.dylib
+          cp -f ./libs/libswscale.8.dylib ./libraries/x64/libswscale.8.dylib
       - name: Upload Libraries
         uses: actions/upload-artifact@v4
         with:
