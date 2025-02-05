@@ -13,6 +13,8 @@ CMakeCache.txt
 CMakeFiles/
 Makefile
 *.sln
+*.dir
+x64/
 
 # Godot 4+ specific ignores
 .godot/

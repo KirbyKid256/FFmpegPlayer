@@ -121,8 +121,8 @@ add_library(${PROJECT_NAME} SHARED ${SOURCES} ${HEADERS})
 
 target_include_directories(${PROJECT_NAME} SYSTEM
     PRIVATE
-        ${CPP_BINDINGS_PATH}/include
-        ${CPP_BINDINGS_PATH}/gen/include
+        ${CPP_BINDINGS_PATH}include
+        ${CPP_BINDINGS_PATH}gen/include
         ${GODOT_GDEXTENSION_DIR}
         ${FFMPEG_DIR}
 )
@@ -147,18 +147,18 @@ endif()
 if(CMAKE_VERSION VERSION_GREATER "3.13")
     target_link_directories(${PROJECT_NAME}
         PRIVATE
-        ${CPP_BINDINGS_PATH}/bin/
+        ${CPP_BINDINGS_PATH}bin/
         ${FFMPEG_DLL_PATH}
     )
 
     if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
         target_link_libraries(${PROJECT_NAME}
-            godot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>.a
-            avcodec-61
-            avformat-61
-            avutil-59
-            swresample-5
-            swscale-8
+            godot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>
+            avcodec
+            avformat
+            avutil
+            swresample
+            swscale
         )
     elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         target_link_libraries(${PROJECT_NAME}
@@ -181,7 +181,7 @@ if(CMAKE_VERSION VERSION_GREATER "3.13")
     endif()
 else()
     target_link_libraries(${PROJECT_NAME}
-        ${CPP_BINDINGS_PATH}/bin/libgodot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>.a
+        ${CPP_BINDINGS_PATH}bin/libgodot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>.a
     )
 endif()
 

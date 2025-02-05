@@ -4,29 +4,25 @@ entry_symbol = "ffmpeg_init"
 compatibility_minimum = 4.1
 
 [libraries]
-windows.x86_64 = "res://addons/ffmpegplayer/win64/libFFmpegPlayer.dll"
-linux.x86_64 = "res://addons/ffmpegplayer/linux64/libFFmpegPlayer.so"
+windows.x86_64 = "res://addons/ffmpegplayer/win64/FFmpegPlayer.dll"
+linux.x86_64 = "res://addons/ffmpegplayer/linux/libFFmpegPlayer.so"
 macos = "res://addons/ffmpegplayer/macos/libFFmpegPlayer.dylib"
 
 [dependencies]
 windows.x86_64 =
-    {"res://addons/ffmpegplayer/win64/libwinpthread-1.dll": "",
-    "res://addons/ffmpegplayer/win64/avcodec-61.dll": "",
-    "res://addons/ffmpegplayer/win64/avfilter-10.dll": "",
-    "res://addons/ffmpegplayer/win64/avformat-61.dll": "",
-    "res://addons/ffmpegplayer/win64/avutil-59.dll": "",
-    "res://addons/ffmpegplayer/win64/swresample-5.dll": "",
-    "res://addons/ffmpegplayer/win64/swscale-8.dll": ""}
+    {"res://addons/ffmpegplayer/win64/avcodec-60.dll": "",
+    "res://addons/ffmpegplayer/win64/avformat-60.dll": "",
+    "res://addons/ffmpegplayer/win64/avutil-58.dll": "",
+    "res://addons/ffmpegplayer/win64/swresample-4.dll": "",
+    "res://addons/ffmpegplayer/win64/swscale-7.dll": ""}
 linux.x86_64 =
-    {"res://addons/ffmpegplayer/linux64/libavcodec.so.61": "",
-    "res://addons/ffmpegplayer/linux64/libavfilter.so.10": "",
-    "res://addons/ffmpegplayer/linux64/libavformat.so.61": "",
-    "res://addons/ffmpegplayer/linux64/libavutil.so.59": "",
-    "res://addons/ffmpegplayer/linux64/libswresample.so.5": "",
-    "res://addons/ffmpegplayer/linux64/libswscale.so.8": ""}
+    {"res://addons/ffmpegplayer/linux/libavcodec.so.61": "",
+    "res://addons/ffmpegplayer/linux/libavformat.so.61": "",
+    "res://addons/ffmpegplayer/linux/libavutil.so.59": "",
+    "res://addons/ffmpegplayer/linux/libswresample.so.5": "",
+    "res://addons/ffmpegplayer/linux/libswscale.so.8": ""}
 macos =
     {"res://addons/ffmpegplayer/macos/libavcodec.61.dylib": "",
-    "res://addons/ffmpegplayer/macos/libavfilter.10.dylib": "",
     "res://addons/ffmpegplayer/macos/libavformat.61.dylib": "",
     "res://addons/ffmpegplayer/macos/libavutil.59.dylib": "",
     "res://addons/ffmpegplayer/macos/libswresample.5.dylib": "",
