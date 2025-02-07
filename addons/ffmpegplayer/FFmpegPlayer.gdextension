@@ -22,11 +22,12 @@ linux.x86_64 =
     "res://addons/ffmpegplayer/linux/libswresample.so.5": "",
     "res://addons/ffmpegplayer/linux/libswscale.so.8": ""}
 macos =
-    {"res://addons/ffmpegplayer/macos/libavcodec.61.dylib": "",
-    "res://addons/ffmpegplayer/macos/libavformat.61.dylib": "",
-    "res://addons/ffmpegplayer/macos/libavutil.59.dylib": "",
-    "res://addons/ffmpegplayer/macos/libswresample.5.dylib": "",
-    "res://addons/ffmpegplayer/macos/libswscale.8.dylib": ""}
+    {"res://addons/ffmpegplayer/macos/libavcodec.61.dylib": "Contents/Frameworks",
+    "res://addons/ffmpegplayer/macos/libavformat.61.dylib": "Contents/Frameworks",
+    "res://addons/ffmpegplayer/macos/libavutil.59.dylib": "Contents/Frameworks",
+    "res://addons/ffmpegplayer/macos/libswresample.5.dylib": "Contents/Frameworks",
+    "res://addons/ffmpegplayer/macos/libswscale.8.dylib": "Contents/Frameworks"}
 
 [icons]
 VideoStreamFFmpeg = "res://addons/ffmpegplayer/icons/VideoStreamFFmpeg.svg"
+VideoStreamFFmpegLoader = "res://addons/ffmpegplayer/icons/VideoStreamFFmpeg.svg"

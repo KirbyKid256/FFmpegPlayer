@@ -180,7 +180,7 @@ Error VideoDecoder::recreate_codec_context() {
         int open_codec_result = avcodec_open2(video_codec_context, info.codec->get_codec_ptr(), nullptr);
         ERR_CONTINUE_MSG(open_codec_result < 0, vformat("Error trying to open %s codec: %s", info.codec->get_codec_ptr()->name, ffmpeg_get_error_message(open_codec_result)));
 
-        UtilityFunctions::print("Succesfully initialized video decoder:", info.codec->get_codec_ptr()->name);
+        UtilityFunctions::print("Succesfully initialized video decoder: ", info.codec->get_codec_ptr()->name);
         break;
     }
 
@@ -654,18 +654,7 @@ void VideoDecoder::seek(double p_time, bool p_wait) {
     last_decoded_frame_time.set(p_time);
     skip_current_outputs.set();
     decoded_frames_mutex.unlock();
-    decoded_frames_mutex.unlock();
-    audio_buffer_mutex.lock();
-    decoded_audio_frames.clear();
-    decoded_frames_mutex.unlock();
-    audio_buffer_mutex.lock();
-    decoded_audio_frames.clear();
     audio_buffer_mutex.unlock();
-    audio_buffer_mutex.unlock();
-    last_decoded_frame_time.set(p_time);
-
-    audio_buffer_mutex.unlock();
-    last_decoded_frame_time.set(p_time);
 
     if (p_wait) {
         decoder_commands.push_and_sync(this, &VideoDecoder::_seek_command, p_time);

@@ -57,7 +57,7 @@ void VideoStreamFFmpegLoader::_update_recognized_extension_cache() const {
 
 String VideoStreamFFmpegLoader::_get_resource_type(const String &p_path) const {
     _update_recognized_extension_cache();
-    if (recognized_extension_cache.has(p_path.get_extension())) {
+    if (recognized_extension_cache.has(p_path.get_extension().to_lower())) {
         return "VideoStreamFFmpeg";
     }
     return "";

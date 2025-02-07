@@ -155,7 +155,10 @@ For Windows, you will need to grab `libavutil/avconfig.h` from your Linux build/
 
 Once you've built the GDExtension, you're now ready to use it in your projects. However, you also need to test it to make sure it works. You can do this by doing the following:
 
-* Download [Godot 4.1](https://github.com/godotengine/godot-builds/releases/tag/4.1-stable) or greater, and create a new
+* Download [Godot 4.1](https://github.com/godotengine/godot-builds/releases/tag/4.1-stable) or higher, and create a new
 project, or open an existing project.
+
+    * If you're testing in Godot 4.4 or higher, there are new `.uid` files that are created for importing resources. DO NOT delete those. I only Git Ignored the ones here because this addon was built with the 4.1 bindings. If I move up to 4.4, then I'll remove `.uid` files from `.gitignore`.
+
 * Copy the `addons` folder in this repository into your Godot project. It should tell you that the editor needs to restart for changes to take effect.
 * Test the FFmpegPlayer by using a non-ogv video as an `VideoStreamFFmpeg` and set the `VideoStreamPlayer`'s stream to that.

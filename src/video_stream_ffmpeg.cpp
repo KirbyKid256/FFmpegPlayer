@@ -214,8 +214,8 @@ void VideoStreamFFmpegPlayback::_play() {
         return;
     }
     clear();
-    playback_position = 0;
-    decoder->seek(0, true);
+    playback_position = 0.0f;
+    decoder->seek(playback_position, true);
     just_seeked = true;
     playing = true;
 }
