@@ -57,7 +57,7 @@ Before running the script however, if you're using a version of Ubuntu that's 24
 * While the contained FFmpeg submodule is already set to this version, you can reset to this tag on any copy of the FFmpeg repository by running `git reset --hard n6.1.2` from the folder.
 * You'll also need to fix a line in `FFmpeg/libavcodec/libsvtav1.c` that's causing the compilation to break.
 
-```sh
+```cpp
 # This is the line to replace
 svt_ret = svt_av1_enc_init_handle(&svt_enc->svt_handle, svt_enc, &svt_enc->enc_params);
 # This is what to replace it with
