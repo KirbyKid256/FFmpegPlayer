@@ -1,0 +1,84 @@
+[gd_scene load_steps=4 format=3 uid="uid://ls8s5lfnqp6b"]
+
+[ext_resource type="Script" path="res://test.gd" id="1_epypp"]
+[ext_resource type="Texture2D" uid="uid://clxsl3j02eylt" path="res://VideoStreamTheora.png" id="2_6uqi0"]
+[ext_resource type="Texture2D" uid="uid://be58ogr1fjf5v" path="res://icon.svg" id="3_ppyta"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_epypp")
+
+[node name="TheoraOGV" type="VideoStreamPlayer" parent="."]
+offset_right = 1280.0
+offset_bottom = 720.0
+scale = Vector2(0.5, 0.5)
+metadata/_edit_use_anchors_ = true
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="TheoraOGV"]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 90.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 64
+text = "Godot OGV"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VideoStreamTheora" type="Sprite2D" parent="TheoraOGV"]
+z_index = -1
+position = Vector2(640, 360)
+texture = ExtResource("2_6uqi0")
+
+[node name="FFmpegOGV" type="VideoStreamPlayer" parent="."]
+offset_top = 360.0
+offset_right = 1280.0
+offset_bottom = 1080.0
+scale = Vector2(0.5, 0.5)
+metadata/_edit_use_anchors_ = true
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="FFmpegOGV"]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 90.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 64
+text = "FFmpegPlayer OGV (Pre-Converted)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VideoStreamTheora" type="Sprite2D" parent="FFmpegOGV"]
+z_index = -1
+position = Vector2(480, 360)
+texture = ExtResource("2_6uqi0")
+
+[node name="VideoStreamFFmpeg" type="Sprite2D" parent="FFmpegOGV"]
+z_index = -1
+position = Vector2(800, 360)
+texture = ExtResource("3_ppyta")
+
+[node name="FFmpegMP4" type="VideoStreamPlayer" parent="."]
+offset_top = 720.0
+offset_right = 1280.0
+offset_bottom = 1440.0
+scale = Vector2(0.5, 0.5)
+metadata/_edit_use_anchors_ = true
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="FFmpegMP4"]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 90.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 64
+text = "FFmpegPlayer MP4 (Original)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VideoStreamFFmpeg" type="Sprite2D" parent="FFmpegMP4"]
+z_index = -1
+position = Vector2(640, 360)
+texture = ExtResource("3_ppyta")

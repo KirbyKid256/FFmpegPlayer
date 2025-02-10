@@ -17,8 +17,8 @@ Makefile
 x64/
 
 # FFmpegPlayer specific ignores
-addons/ffmpegplayer/win64/~FFmpegPlayer.dll
-addons/ffmpegplayer/win64/~FFmpegPlayer_0.pdb
+test/addons/ffmpegplayer/win64/~FFmpegPlayer.dll
+test/addons/ffmpegplayer/win64/~FFmpegPlayer_0.pdb
 
 # Godot 4+ specific ignores
 .godot/

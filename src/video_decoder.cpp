@@ -259,7 +259,7 @@ void VideoDecoder::_thread_func(void *userdata) {
     AVFrame *receive_frame = av_frame_alloc();
 
     String video_decoding_str = vformat("Video decoding %d", OS::get_singleton()->get_thread_caller_id());
-    CharString str = video_decoding_str.utf8();
+    // UtilityFunctions::print(video_decoding_str);
     while (!decoder->thread_abort.is_set()) {
         switch (decoder->decoder_state) {
             case READY:

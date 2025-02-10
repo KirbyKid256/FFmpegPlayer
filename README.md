@@ -1,10 +1,10 @@
 # FFmpegPlayer
 
 A derivative work of [EIRTeam.FFmpeg](https://github.com/EIRTeam/EIRTeam.FFmpeg),
-Licensed under MIT license (see [LICENSE-EIRTeam-gdextension.txt](addons/ffmpegplayer/LICENSE-EIRTeam-gdextension.txt))
+Licensed under MIT license (see [LICENSE-EIRTeam-gdextension.txt](test/addons/ffmpegplayer/LICENSE-EIRTeam-gdextension.txt))
 
 This extension also uses parts of the [FFmpeg](https://ffmpeg.org/) library,  
-Licensed under the LGPL license (see [LICENSE-ffmpeg.txt](addons/ffmpegplayer/LICENSE-ffmpeg.txt))  
+Licensed under the LGPL license (see [LICENSE-ffmpeg.txt](test/addons/ffmpegplayer/LICENSE-ffmpeg.txt))  
 (Compiled with non-GPL and non-free options)
 
 Note that on Linux specifically, you need to install these libraries in order for this extension to work on either end (for some reason).
@@ -16,7 +16,7 @@ sudo apt-get install libva2 libva-drm2 libva-x11-2 libvdpau1 -y
 
 First and foremost, you will need to install [Git](https://git-scm.com/downloads) in any way that works. Going forward I'll assume you've already done so, so I won't include it in future dependency installation code.
 
-To add this GDextension to your Godot project, press the green `Code` button to download this repository as a zip or clone it somewhere using Git. Then, copy and paste the `addons` directory next to `project.godot`. Then, when you open the project, you'll need to restart the editor so the changes can take effect. Once that's done, `VideoStreamFFmpeg` and other classes will be avaliable to use. However, if exporting doesn't work and there's an error saying that the GDExtension can't be found, you could try deleting the cache in the `.godot` folder and re-import everything to fix it.
+To add this GDextension to your Godot project, press the green `Code` button to download this repository as a zip or clone it somewhere using Git. Then, copy and paste the `addons` directory located in the `test` folder next to `project.godot`. Then, when you open the project, you'll need to restart the editor so the changes can take effect. Once that's done, `VideoStreamFFmpeg` and other classes will be avaliable to use. However, if exporting doesn't work and there's an error saying that the GDExtension can't be found, you could try deleting the cache in the `.godot` folder and re-import everything to fix it.
 
 You also need to make sure the proper licensing attributions and actions are taken by the project. For FFmpeg, be sure to refer to [FFmpeg License and Legal Considerations](https://www.ffmpeg.org/legal.html) for more information.
 
@@ -58,9 +58,9 @@ Before running the script however, if you're using a version of Ubuntu that's 24
 * You'll also need to fix a line in `FFmpeg/libavcodec/libsvtav1.c` that's causing the compilation to break.
 
 ```cpp
-# This is the line to replace
+// This is the line to replace
 svt_ret = svt_av1_enc_init_handle(&svt_enc->svt_handle, svt_enc, &svt_enc->enc_params);
-# This is what to replace it with
+// This is what to replace it with
 svt_ret = svt_av1_enc_init_handle(&svt_enc->svt_handle, &svt_enc->enc_params);
 ```
 
@@ -155,7 +155,7 @@ For Windows, you will need to grab `libavutil/avconfig.h` from your Linux build/
 
 Once you've built the GDExtension, you're now ready to use it in your projects. However, you also need to test it to make sure it works. You can do this by doing the following:
 
-* Download [Godot 4.1](https://github.com/godotengine/godot-builds/releases/tag/4.1-stable) or higher, and create a new
+* Download [Godot 4.1.4](https://godotengine.org/download/archive/4.1.4-stable/) or higher, and create a new
 project, or open an existing project.
 
     * If you're testing in Godot 4.4 or higher, there are new `.uid` files that are created for importing resources. DO NOT delete those. I only Git Ignored the ones here because this addon was built with the 4.1 bindings. If I move up to 4.4, then I'll remove `.uid` files from `.gitignore`.
