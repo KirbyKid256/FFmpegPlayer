@@ -50,7 +50,9 @@ void VideoStreamFFmpegLoader::_update_recognized_extension_cache() const {
         if (current_fmt->extensions == nullptr) {
             continue;
         }
-        PackedStringArray demuxer_exts = String(current_fmt->extensions).split(",", false);
+        Array demuxer_exts = String(current_fmt->extensions).split(",", false);
+        // Exclude these from this loader
+        demuxer_exts.erase("mp3"); demuxer_exts.erase("txt");
         const_cast<VideoStreamFFmpegLoader *>(this)->recognized_extension_cache.append_array(demuxer_exts);
     }
 }

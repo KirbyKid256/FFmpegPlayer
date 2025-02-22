@@ -175,8 +175,8 @@ public:
     Vector<AvailableDecoderInfo> get_available_video_decoders(const AVInputFormat *p_format, AVCodecID p_codec_id, BitField<HardwareVideoDecoder> p_target_decoders);
     void return_frames(Vector<Ref<DecodedFrame>> p_frames);
     void return_frame(Ref<DecodedFrame> p_frame);
-    Vector<Ref<DecodedFrame>> get_decoded_frames();
-    Vector<Ref<DecodedAudioFrame>> get_decoded_audio_frames();
+    Vector<Ref<DecodedFrame>> get_decoded_frames(bool p_clear = true);
+    Vector<Ref<DecodedAudioFrame>> get_decoded_audio_frames(bool p_clear = true);
     DecoderState get_decoder_state() const;
     double get_last_decoded_frame_time() const;
     bool is_running() const;

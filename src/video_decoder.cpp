@@ -770,18 +770,18 @@ void VideoDecoder::return_frame(Ref<DecodedFrame> p_frame) {
     available_textures.push_back(p_frame->get_texture());
 }
 
-Vector<Ref<DecodedFrame>> VideoDecoder::get_decoded_frames() {
+Vector<Ref<DecodedFrame>> VideoDecoder::get_decoded_frames(bool p_clear) {
     Vector<Ref<DecodedFrame>> frames;
     MutexLock lock(decoded_frames_mutex);
     frames = decoded_frames.duplicate();
-    decoded_frames.clear();
+    if (p_clear) decoded_frames.clear();
     return frames;
 }
 
-Vector<Ref<DecodedAudioFrame>> VideoDecoder::get_decoded_audio_frames() {
+Vector<Ref<DecodedAudioFrame>> VideoDecoder::get_decoded_audio_frames(bool p_clear) {
     MutexLock lock(audio_buffer_mutex);
     Vector<Ref<DecodedAudioFrame>> frames = decoded_audio_frames.duplicate();
-    decoded_audio_frames.clear();
+    if (p_clear) decoded_audio_frames.clear();
     return frames;
 }
 

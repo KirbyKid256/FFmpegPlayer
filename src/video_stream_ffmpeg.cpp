@@ -76,14 +76,27 @@ void VideoStreamFFmpegPlayback::_update(double p_delta) {
         return;
     }
 
-    playback_position += p_delta * 1000.0f;
+    if (!just_seeked) playback_position += p_delta * 1000.0f;
 
     if (decoder->get_decoder_state() == VideoDecoder::DecoderState::END_OF_STREAM && available_frames.size() == 0) {
         // if at the end of the stream but our playback enters a valid time region again, a seek operation is required to get the decoder back on track.
-        if (playback_position < decoder->get_duration()) {
+        if (playback_position < decoder->get_last_decoded_frame_time()) {
             seek_into_sync();
         } else {
             playing = false;
+        }
+    }
+
+    // Get these ASAP since we need them for later
+    if (available_frames.size() == 0 && decoder->get_decoded_frames(false).size() > 0) {
+        for (Ref<DecodedFrame> frame : decoder->get_decoded_frames()) {
+            available_frames.push_back(frame);
+        }
+    }
+
+    if (available_audio_frames.size() == 0 && decoder->get_decoded_audio_frames(false).size() > 0) {
+        for (Ref<DecodedAudioFrame> frame : decoder->get_decoded_audio_frames()) {
+            available_audio_frames.push_back(frame);
         }
     }
 
@@ -136,12 +149,6 @@ void VideoStreamFFmpegPlayback::_update(double p_delta) {
     }
 #endif
 
-    if (available_frames.size() == 0) {
-        for (Ref<DecodedFrame> frame : decoder->get_decoded_frames()) {
-            available_frames.push_back(frame);
-        }
-    }
-
     Ref<DecodedAudioFrame> peek_audio_frame;
     if (available_audio_frames.size() > 0) {
         peek_audio_frame = available_audio_frames.front()->get();
@@ -169,11 +176,6 @@ void VideoStreamFFmpegPlayback::_update(double p_delta) {
         mix_audio(sample_count, audio_frame->get_sample_data(), 0);
         next_audio_frame = next_audio_frame->next();
         available_audio_frames.pop_front();
-    }
-    if (available_audio_frames.size() == 0) {
-        for (Ref<DecodedAudioFrame> frame : decoder->get_decoded_audio_frames()) {
-            available_audio_frames.push_back(frame);
-        }
     }
 
     buffering = decoder->is_running() && available_frames.size() == 0;
@@ -270,6 +272,8 @@ void VideoStreamFFmpegPlayback::clear() {
     last_frame_texture.unref();
     available_frames.clear();
     available_audio_frames.clear();
+    decoder->get_decoded_frames();
+    decoder->get_decoded_audio_frames();
     frames_processed = 0;
     playing = false;
 }
