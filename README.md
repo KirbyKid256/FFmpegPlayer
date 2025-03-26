@@ -3,6 +3,8 @@
 A derivative work of [EIRTeam.FFmpeg](https://github.com/EIRTeam/EIRTeam.FFmpeg),
 Licensed under MIT license (see [LICENSE-EIRTeam-gdextension.txt](test/addons/ffmpegplayer/LICENSE-EIRTeam-gdextension.txt))
 
+This was created by [SockHungryClutz](https://github.com/SockHungryClutz) and updated by me, KirbyKidJ. It was a scrapped feature for a Godot project, and I have gotten permission from him to continue it.
+
 This extension also uses parts of the [FFmpeg](https://ffmpeg.org/) library,  
 Licensed under the LGPL license (see [LICENSE-ffmpeg.txt](test/addons/ffmpegplayer/LICENSE-ffmpeg.txt))  
 (Compiled with non-GPL and non-free options)
