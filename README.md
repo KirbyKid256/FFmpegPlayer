@@ -47,7 +47,7 @@ sudo apt-get update
 sudo apt-get install subversion ragel curl texinfo g++ ed bison flex cvs yasm automake libtool autoconf gcc cmake make pkg-config zlib1g-dev unzip pax nasm gperf autogen bzip2 autoconf-archive p7zip-full meson clang python-is-python3 -y
 ```
 
-* Please notify me if there are any after `python-is-python3` that you do NOT need to install, I just copied this from the Linux command to make sure ti actually compiles.
+* Please notify me if there are any after `python-is-python3` that you do NOT need to install, I just copied this from the Linux command to make sure it actually compiles.
 
 To compile the Godot CPP Bindings and GDExtension for Windows on Linux, you'll also need to install these:
 ```sh
