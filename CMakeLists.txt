@@ -163,11 +163,11 @@ if(CMAKE_VERSION VERSION_GREATER "3.13")
     elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         target_link_libraries(${PROJECT_NAME}
             godot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>.a
-            avcodec.61
-            avformat.61
-            avutil.59
-            swresample.5
-            swscale.8
+            avcodec.60
+            avformat.60
+            avutil.58
+            swresample.4
+            swscale.7
         )
     else()
         target_link_libraries(${PROJECT_NAME}

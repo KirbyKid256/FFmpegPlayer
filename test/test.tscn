@@ -85,3 +85,11 @@ vertical_alignment = 1
 z_index = -1
 position = Vector2(640, 360)
 texture = ExtResource("3_ppyta")
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a File"
+ok_button_text = "Open"
+file_mode = 0
+root_subfolder = "videos"
+
+[connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]

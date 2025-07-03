@@ -16,17 +16,17 @@ windows.x86_64 =
     "res://addons/ffmpegplayer/win64/swresample-4.dll": "",
     "res://addons/ffmpegplayer/win64/swscale-7.dll": ""}
 linux.x86_64 =
-    {"res://addons/ffmpegplayer/linux/libavcodec.so.61": "",
-    "res://addons/ffmpegplayer/linux/libavformat.so.61": "",
-    "res://addons/ffmpegplayer/linux/libavutil.so.59": "",
-    "res://addons/ffmpegplayer/linux/libswresample.so.5": "",
-    "res://addons/ffmpegplayer/linux/libswscale.so.8": ""}
+    {"res://addons/ffmpegplayer/linux/libavcodec.so.60": "",
+    "res://addons/ffmpegplayer/linux/libavformat.so.60": "",
+    "res://addons/ffmpegplayer/linux/libavutil.so.58": "",
+    "res://addons/ffmpegplayer/linux/libswresample.so.4": "",
+    "res://addons/ffmpegplayer/linux/libswscale.so.7": ""}
 macos =
-    {"res://addons/ffmpegplayer/macos/libavcodec.61.dylib": "Contents/Frameworks",
-    "res://addons/ffmpegplayer/macos/libavformat.61.dylib": "Contents/Frameworks",
-    "res://addons/ffmpegplayer/macos/libavutil.59.dylib": "Contents/Frameworks",
-    "res://addons/ffmpegplayer/macos/libswresample.5.dylib": "Contents/Frameworks",
-    "res://addons/ffmpegplayer/macos/libswscale.8.dylib": "Contents/Frameworks"}
+    {"res://addons/ffmpegplayer/macos/libavcodec.60.dylib": "Contents/Frameworks",
+    "res://addons/ffmpegplayer/macos/libavformat.60.dylib": "Contents/Frameworks",
+    "res://addons/ffmpegplayer/macos/libavutil.58.dylib": "Contents/Frameworks",
+    "res://addons/ffmpegplayer/macos/libswresample.4.dylib": "Contents/Frameworks",
+    "res://addons/ffmpegplayer/macos/libswscale.7.dylib": "Contents/Frameworks"}
 
 [icons]
 VideoStreamFFmpeg = "res://addons/ffmpegplayer/icons/VideoStreamFFmpeg.svg"

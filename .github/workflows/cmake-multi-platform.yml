@@ -16,7 +16,6 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install libass-dev libgnutls28-dev libmp3lame-dev libsdl2-dev libva-dev libvdpau-dev libvorbis-dev libxcb-xfixes0-dev meson ninja-build pkg-config yasm nasm -y
           git submodule init && git submodule update
-          rm -r FFmpeg && git clone https://github.com/FFmpeg/FFmpeg
       - name: Configure FFmpeg
         run: |
           cd FFmpeg
@@ -25,16 +24,16 @@ jobs:
       - name: Package Libraries
         run: |
           mkdir libs
-          mv ./FFmpeg/libavcodec/libavcodec.so.61 ./libs/libavcodec.so.61
-          mv ./FFmpeg/libavformat/libavformat.so.61 ./libs/libavformat.so.61
-          mv ./FFmpeg/libavutil/libavutil.so.59 ./libs/libavutil.so.59
-          mv ./FFmpeg/libswresample/libswresample.so.5 ./libs/libswresample.so.5
-          mv ./FFmpeg/libswscale/libswscale.so.8 ./libs/libswscale.so.8
-          cp -f ./libs/libavcodec.so.61 ./libraries/x64/libavcodec.so
-          cp -f ./libs/libavformat.so.61 ./libraries/x64/libavformat.so
-          cp -f ./libs/libavutil.so.59 ./libraries/x64/libavutil.so
-          cp -f ./libs/libswresample.so.5 ./libraries/x64/libswresample.so
-          cp -f ./libs/libswscale.so.8 ./libraries/x64/libswscale.so
+          mv ./FFmpeg/libavcodec/libavcodec.so.60 ./libs/libavcodec.so.60
+          mv ./FFmpeg/libavformat/libavformat.so.60 ./libs/libavformat.so.60
+          mv ./FFmpeg/libavutil/libavutil.so.58 ./libs/libavutil.so.58
+          mv ./FFmpeg/libswresample/libswresample.so.4 ./libs/libswresample.so.4
+          mv ./FFmpeg/libswscale/libswscale.so.7 ./libs/libswscale.so.7
+          cp -f ./libs/libavcodec.so.60 ./libraries/x64/libavcodec.so
+          cp -f ./libs/libavformat.so.60 ./libraries/x64/libavformat.so
+          cp -f ./libs/libavutil.so.58 ./libraries/x64/libavutil.so
+          cp -f ./libs/libswresample.so.4 ./libraries/x64/libswresample.so
+          cp -f ./libs/libswscale.so.7 ./libraries/x64/libswscale.so
       - name: Upload Libraries
         uses: actions/upload-artifact@v4
         with:
@@ -62,7 +61,6 @@ jobs:
         run: |
           brew install yasm automake fdk-aac lame libass libtool libvorbis libvpx opus sdl12-compat shtool texi2html theora x264 x265 xvid nasm
           git submodule init && git submodule update
-          rm -r FFmpeg && git clone https://github.com/FFmpeg/FFmpeg
       - name: Configure FFmpeg
         run: |
           cd FFmpeg
@@ -71,16 +69,16 @@ jobs:
       - name: Package Libraries
         run: |
           mkdir libs
-          mv ./FFmpeg/libavcodec/libavcodec.61.dylib ./libs/libavcodec.61.dylib
-          mv ./FFmpeg/libavformat/libavformat.61.dylib ./libs/libavformat.61.dylib
-          mv ./FFmpeg/libavutil/libavutil.59.dylib ./libs/libavutil.59.dylib
-          mv ./FFmpeg/libswresample/libswresample.5.dylib ./libs/libswresample.5.dylib
-          mv ./FFmpeg/libswscale/libswscale.8.dylib ./libs/libswscale.8.dylib
-          cp -f ./libs/libavcodec.61.dylib ./libraries/x64/libavcodec.61.dylib
-          cp -f ./libs/libavformat.61.dylib ./libraries/x64/libavformat.61.dylib
-          cp -f ./libs/libavutil.59.dylib ./libraries/x64/libavutil.59.dylib
-          cp -f ./libs/libswresample.5.dylib ./libraries/x64/libswresample.5.dylib
-          cp -f ./libs/libswscale.8.dylib ./libraries/x64/libswscale.8.dylib
+          mv ./FFmpeg/libavcodec/libavcodec.60.dylib ./libs/libavcodec.60.dylib
+          mv ./FFmpeg/libavformat/libavformat.60.dylib ./libs/libavformat.60.dylib
+          mv ./FFmpeg/libavutil/libavutil.58.dylib ./libs/libavutil.58.dylib
+          mv ./FFmpeg/libswresample/libswresample.4.dylib ./libs/libswresample.4.dylib
+          mv ./FFmpeg/libswscale/libswscale.7.dylib ./libs/libswscale.7.dylib
+          cp -f ./libs/libavcodec.60.dylib ./libraries/x64/libavcodec.60.dylib
+          cp -f ./libs/libavformat.60.dylib ./libraries/x64/libavformat.60.dylib
+          cp -f ./libs/libavutil.58.dylib ./libraries/x64/libavutil.58.dylib
+          cp -f ./libs/libswresample.4.dylib ./libraries/x64/libswresample.4.dylib
+          cp -f ./libs/libswscale.7.dylib ./libraries/x64/libswscale.7.dylib
       - name: Upload Libraries
         uses: actions/upload-artifact@v4
         with:
