@@ -69,7 +69,7 @@ svt_ret = svt_av1_enc_init_handle(&svt_enc->svt_handle, &svt_enc->enc_params);
 Once you have all the dependencies, use the following command in the Build Helpers root:
 
 ```sh
-./cross_compile_ffmpeg.sh --build-ffmpeg-static=n --build-ffmpeg-shared=y --gcc-cpu-count=3 --compiler-flavors=win64 --enable-gpl=n
+./cross_compile_ffmpeg.sh --build-ffmpeg-static=n --build-ffmpeg-shared=y --gcc-cpu-count=3 --compiler-flavors=win64 --enable-gpl=n --ffmpeg-git-checkout-version=n6.1.2
 ```
 
 After building, the needed contents are found inside `sandbox/win64/ffmpeg_git_lgpl_master_shared/bin`. Yes, creating a whole Linux install just to use this tool is easier than trying to build FFmpeg on Windows.

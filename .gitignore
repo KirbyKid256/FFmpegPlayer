@@ -15,13 +15,15 @@ Makefile
 *.sln
 *.dir
 x64/
+!libraries/x64
 
 # FFmpegPlayer specific ignores
 test/addons/ffmpegplayer/win64/~FFmpegPlayer.dll
 test/addons/ffmpegplayer/win64/~FFmpegPlayer_0.pdb
+test/videos/
 
 # Godot 4+ specific ignores
-.godot/
+*.godot/
 *.uid
 
 # Godot-specific ignores

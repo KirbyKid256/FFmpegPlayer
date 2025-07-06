@@ -1,13 +1,33 @@
-[gd_scene load_steps=4 format=3 uid="uid://ls8s5lfnqp6b"]
+[gd_scene load_steps=10 format=3 uid="uid://ls8s5lfnqp6b"]
 
-[ext_resource type="Script" path="res://test.gd" id="1_epypp"]
-[ext_resource type="Texture2D" uid="uid://clxsl3j02eylt" path="res://VideoStreamTheora.png" id="2_6uqi0"]
-[ext_resource type="Texture2D" uid="uid://be58ogr1fjf5v" path="res://icon.svg" id="3_ppyta"]
+[ext_resource type="Script" uid="uid://by3hl6ymvfp60" path="res://test.gd" id="1_ehkex"]
+[ext_resource type="Texture2D" uid="uid://clxsl3j02eylt" path="res://textures/VideoStreamTheora.png" id="2_xersf"]
+[ext_resource type="Texture2D" uid="uid://be58ogr1fjf5v" path="res://icon.svg" id="3_00tp4"]
+[ext_resource type="Script" uid="uid://bt3difter3g41" path="res://timeline_bar.gd" id="4_77dp3"]
+[ext_resource type="Texture2D" uid="uid://dkoi165xo7lg1" path="res://textures/Play.svg" id="5_5tkv4"]
+[ext_resource type="Texture2D" uid="uid://bi1nf4gusgpwh" path="res://textures/Stop.svg" id="6_0m0f1"]
+[ext_resource type="Texture2D" uid="uid://dhm7ek6jhyvoi" path="res://textures/Loop.png" id="7_b0q6j"]
+[ext_resource type="Texture2D" uid="uid://ju7hhgbeurw2" path="res://textures/Fullscreen.png" id="8_mhym6"]
 
-[node name="Node2D" type="Node2D"]
-script = ExtResource("1_epypp")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5bi2t"]
+bg_color = Color(0, 0, 0, 0.4)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
 
-[node name="TheoraOGV" type="VideoStreamPlayer" parent="."]
+[node name="Player" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ehkex")
+
+[node name="Views" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="TheoraOGV" type="VideoStreamPlayer" parent="Views"]
+unique_name_in_owner = true
 offset_right = 1280.0
 offset_bottom = 720.0
 scale = Vector2(0.5, 0.5)
@@ -15,10 +35,11 @@ expand = true
 metadata/_edit_use_anchors_ = true
 metadata/_edit_group_ = true
 
-[node name="Label" type="Label" parent="TheoraOGV"]
+[node name="Label" type="Label" parent="Views/TheoraOGV"]
 layout_mode = 0
+offset_top = -0.00224304
 offset_right = 1280.0
-offset_bottom = 90.0
+offset_bottom = 89.9978
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 16
 theme_override_font_sizes/font_size = 64
@@ -26,12 +47,13 @@ text = "Godot OGV"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VideoStreamTheora" type="Sprite2D" parent="TheoraOGV"]
-z_index = -1
-position = Vector2(640, 360)
-texture = ExtResource("2_6uqi0")
+[node name="VideoStreamTheora" type="Sprite2D" parent="Views/TheoraOGV"]
+show_behind_parent = true
+position = Vector2(640, 359.998)
+texture = ExtResource("2_xersf")
 
-[node name="FFmpegOGV" type="VideoStreamPlayer" parent="."]
+[node name="FFmpegOGV" type="VideoStreamPlayer" parent="Views"]
+unique_name_in_owner = true
 offset_top = 360.0
 offset_right = 1280.0
 offset_bottom = 1080.0
@@ -40,7 +62,7 @@ expand = true
 metadata/_edit_use_anchors_ = true
 metadata/_edit_group_ = true
 
-[node name="Label" type="Label" parent="FFmpegOGV"]
+[node name="Label" type="Label" parent="Views/FFmpegOGV"]
 layout_mode = 0
 offset_right = 1280.0
 offset_bottom = 90.0
@@ -51,17 +73,18 @@ text = "FFmpegPlayer OGV (Pre-Converted)"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VideoStreamTheora" type="Sprite2D" parent="FFmpegOGV"]
-z_index = -1
+[node name="VideoStreamTheora" type="Sprite2D" parent="Views/FFmpegOGV"]
+show_behind_parent = true
 position = Vector2(480, 360)
-texture = ExtResource("2_6uqi0")
+texture = ExtResource("2_xersf")
 
-[node name="VideoStreamFFmpeg" type="Sprite2D" parent="FFmpegOGV"]
-z_index = -1
+[node name="VideoStreamFFmpeg" type="Sprite2D" parent="Views/FFmpegOGV"]
+show_behind_parent = true
 position = Vector2(800, 360)
-texture = ExtResource("3_ppyta")
+texture = ExtResource("3_00tp4")
 
-[node name="FFmpegMP4" type="VideoStreamPlayer" parent="."]
+[node name="FFmpegMP4" type="VideoStreamPlayer" parent="Views"]
+unique_name_in_owner = true
 offset_top = 720.0
 offset_right = 1280.0
 offset_bottom = 1440.0
@@ -70,7 +93,7 @@ expand = true
 metadata/_edit_use_anchors_ = true
 metadata/_edit_group_ = true
 
-[node name="Label" type="Label" parent="FFmpegMP4"]
+[node name="Label" type="Label" parent="Views/FFmpegMP4"]
 layout_mode = 0
 offset_right = 1280.0
 offset_bottom = 90.0
@@ -81,15 +104,160 @@ text = "FFmpegPlayer MP4 (Original)"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VideoStreamFFmpeg" type="Sprite2D" parent="FFmpegMP4"]
-z_index = -1
+[node name="VideoStreamFFmpeg" type="Sprite2D" parent="Views/FFmpegMP4"]
+show_behind_parent = true
 position = Vector2(640, 360)
-texture = ExtResource("3_ppyta")
+texture = ExtResource("3_00tp4")
+
+[node name="TimelineBar" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -56.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_5bi2t")
+script = ExtResource("4_77dp3")
+metadata/_edit_group_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TimelineBar"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = -56.0
+offset_right = -2.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TimelineBar/VBoxContainer"]
+layout_mode = 2
+
+[node name="TimeLeft" type="Label" parent="TimelineBar/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "00:00:00"
+
+[node name="HScrollBar" type="HScrollBar" parent="TimelineBar/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="TimeLength" type="Label" parent="TimelineBar/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "00:00:00"
+horizontal_alignment = 2
+
+[node name="Play" type="Button" parent="TimelineBar"]
+custom_minimum_size = Vector2(29, 29)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = -31.0
+offset_right = 31.0
+offset_bottom = -2.0
+grow_vertical = 0
+icon = ExtResource("5_5tkv4")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Stop" type="Button" parent="TimelineBar"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 39.0
+offset_top = -28.0
+offset_right = 63.0
+offset_bottom = -4.0
+grow_vertical = 0
+icon = ExtResource("6_0m0f1")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Loop" type="Button" parent="TimelineBar"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 65.0
+offset_top = -28.0
+offset_right = 89.0
+offset_bottom = -4.0
+grow_vertical = 0
+toggle_mode = true
+icon = ExtResource("7_b0q6j")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Fullscreen" type="Button" parent="TimelineBar"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 99.0
+offset_top = -28.0
+offset_right = 123.0
+offset_bottom = -4.0
+grow_vertical = 0
+toggle_mode = true
+icon = ExtResource("8_mhym6")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Volume" type="HSlider" parent="TimelineBar"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -102.0
+offset_top = -24.0
+offset_right = -2.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+max_value = 1.0
+step = 0.01
+value = 1.0
+scrollable = false
+
+[node name="Visual" type="ProgressBar" parent="TimelineBar/Volume"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -5.5
+offset_bottom = 5.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+max_value = 1.0
+value = 1.0
 
 [node name="FileDialog" type="FileDialog" parent="."]
 title = "Open a File"
+size = Vector2i(640, 1080)
 ok_button_text = "Open"
 file_mode = 0
+access = 2
 root_subfolder = "videos"
 
+[connection signal="gui_input" from="Views/TheoraOGV" to="." method="_on_theora_ogv_gui_input"]
+[connection signal="gui_input" from="Views/FFmpegOGV" to="." method="_on_ffmpeg_ogv_gui_input"]
+[connection signal="gui_input" from="Views/FFmpegMP4" to="." method="_on_ffmpeg_mp4_gui_input"]
+[connection signal="value_changed" from="TimelineBar/VBoxContainer/HBoxContainer/HScrollBar" to="TimelineBar" method="_on_h_scroll_bar_value_changed"]
+[connection signal="button_up" from="TimelineBar/Play" to="TimelineBar" method="_on_play_button_up"]
+[connection signal="button_up" from="TimelineBar/Stop" to="TimelineBar" method="_on_stop_button_up"]
+[connection signal="toggled" from="TimelineBar/Loop" to="TimelineBar" method="_on_loop_toggled"]
+[connection signal="toggled" from="TimelineBar/Fullscreen" to="TimelineBar" method="_on_fullscreen_toggled"]
+[connection signal="value_changed" from="TimelineBar/Volume" to="TimelineBar" method="_on_volume_value_changed"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
+[connection signal="file_selected" from="FileDialog" to="TimelineBar" method="_on_file_dialog_file_selected"]
